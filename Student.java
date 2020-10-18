@@ -1,15 +1,13 @@
 package Entity;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import FileIO.FileIO;
 import Entity.Course;
-
-import javax.sound.midi.VoiceStatus;
 
 
 public class Student implements Serializable {
@@ -18,8 +16,8 @@ public class Student implements Serializable {
     private String matricNumber;
     private String nationality;
     private char gender;
-    private Course[] coursesTaken;
-    private Course[] coursesWaiting;
+    private Course[] coursesTaken = new Course[10];
+    private Course[] coursesWaiting = new Course[5];
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
@@ -30,24 +28,16 @@ public class Student implements Serializable {
      * @param matricNumber the matriculation number of the student
      * @param nationality the nationality of the student
      * @param gender the gender of the student
-     * @param coursesTaken the courses in which the student is enrolled
-     * @param coursesWaiting the courses for which the student is on waiting list
-     * @param startDate starting date of student access period
-     * @param endDate ending date of student access period
-     * @param startTime starting time of student access period
-     * @param endTime ending time of student access period
      */
-    public Student(String name, String matricNumber, String nationality, char gender, Course[] coursesTaken, Course[] coursesWaiting, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+    public Student(String name, String matricNumber, String nationality, char gender) {
         this.name = name;
         this.matricNumber = matricNumber;
         this.nationality = nationality;
         this.gender = gender;
-        this.coursesTaken = coursesTaken;
-        this.coursesWaiting = coursesWaiting;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDate = LocalDate.of(2020, 10, 15);
+        this.endDate = LocalDate.of(2020, 10, 30);
+        this.startTime = LocalTime.of(10, 0, 0);
+        this.endTime = LocalTime.of(22, 0, 0);
     }
 
     public Student() {
@@ -158,18 +148,31 @@ public class Student implements Serializable {
         this.endTime = endTime;
     }
 
-    public static List<Student> readObjectsFromFile() throws IOException {
+    public static List<Student> readObjectsFromFile(){
         List<Student> studentList = new ArrayList<>();
-        FileInputStream fiStream = new FileInputStream("student.dat");
+        FileInputStream fiStream = null;
+        try {
+            fiStream = new FileInputStream("student.dat");
+        } catch (FileNotFoundException e) {
+            System.out.println("File was not found.");
+            //e.printStackTrace();
+        }
         BufferedInputStream biStream = new BufferedInputStream(fiStream);
-        ObjectInputStream oiStream = new ObjectInputStream(biStream);
+        ObjectInputStream oiStream = null;
+        try {
+            oiStream = new ObjectInputStream(biStream);
+        } catch (IOException e) {
+            System.out.println("IO Error occurred while creating Input Stream object.");
+            //e.printStackTrace();
+            return studentList;
+        }
         try {
             int counter = 0;
             while (true) {
                 Object inputObject;
                 inputObject = oiStream.readObject();
                 if (inputObject instanceof Student)
-                    studentList.set(counter, (Student) inputObject);
+                    studentList.add((Student) inputObject);
                 else {
                     System.out.println("Database error! Wrong type of object in file.");
                     System.exit(0);
@@ -182,18 +185,30 @@ public class Student implements Serializable {
             System.out.println("Database error! Class type does not match.");
             e.printStackTrace();
             System.exit(0);
-        }finally {
-            oiStream.close();
+        } catch (IOException e) {
+            System.out.println("IO Error occurred while reading object from file.");
+            //e.printStackTrace();
+        } finally {
+            try {
+                oiStream.close();
+            } catch (IOException e) {
+                System.out.println("IO Error occurred while closing file.");
+                //e.printStackTrace();
+            }
         }
         return studentList;
     }
 
     public static void writeObjectsToFile(Object object) {
+        List<Student> studentList = new ArrayList<>();
+        studentList = Student.readObjectsFromFile();
         try {
-            FileOutputStream foStream = new FileOutputStream("student.dat", true);
+            FileOutputStream foStream = new FileOutputStream("student.dat");
             BufferedOutputStream boStream = new BufferedOutputStream(foStream);
             ObjectOutputStream ooStream = new ObjectOutputStream(boStream);
-            ooStream.writeObject(object);
+            studentList.add((Student) object);
+            for(Student student: studentList)
+                ooStream.writeObject(student);
             ooStream.close();
             System.out.println("Student record has been successfully added!");
         } catch (IOException e) {
