@@ -53,4 +53,14 @@ public class StudentMgr {
         System.out.println("Student access period has been successfully edited.");
         return true;
     }
+    public static void displayAllStudents(){
+        List<Student> studentList = new ArrayList<>();
+        studentList = Student.readObjectsFromFile();
+        System.out.println("*****************************************");
+        System.out.printf("%-15s %-7s %-15s\n", "Name", "Gender", "Nationality");
+        System.out.println("*****************************************");
+        for (Student student: studentList) {
+            student.printStudentDetails();
+        }
+    }
 }
