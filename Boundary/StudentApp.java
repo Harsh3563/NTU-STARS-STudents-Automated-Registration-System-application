@@ -25,6 +25,7 @@ public class StudentApp {
             System.out.println("Choose the option according to the following menu:");
             System.out.println("1. Edit student access period.");
             System.out.println("2. Add a student");
+            System.out.println("3. Display all the students.");
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
             switch (choice){
@@ -54,6 +55,8 @@ public class StudentApp {
                         for (Student student: studentList)
                             System.out.println("Matric no. " + student.getMatricNumber());
                         StudentMgr.addStudent(s);
+                        break;
+                case 3: StudentMgr.displayAllStudents();
                         break;
             }
 
