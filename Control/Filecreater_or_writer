@@ -1,0 +1,53 @@
+package pretest;
+import java.io.File;
+//file creation^^
+import java.io.FileWriter;
+//file write^^
+import java.io.IOException;
+// this is just exception handling
+
+public class Test1 {
+public static void filecreator() {
+	try {
+	File test = new File("testo1.txt");
+	//File myObj = new File("C:\\Users\\MyName\\filename.txt");'
+	// if you want a specific directory you can do this^^
+	// if not this will create the file in the project directory
+	// the File(_this is where to store and call it_)
+	if(test.createNewFile()!=true) {
+		System.out.println("It already exists");
+	}
+	else {
+		System.out.println("File successfully created");
+	}
+	
+}catch(IOException e) {
+	// bug in creating a file IOException is a class
+	System.out.println("Error detected file creation");
+	e.printStackTrace();// this will show the exact line that the error is caused at
+}
+
+
+}
+
+public static void filewriter(String insert) {
+	try {
+		FileWriter filo=new FileWriter("testo1.txt");		
+		filo.write(insert);
+		//this is the part where u insert what u want to say
+		filo.close();
+		//close the file
+		System.out.println("Write successful");
+		
+	}catch(IOException e){
+		System.out.print("Error detected file write");
+		e.printStackTrace();
+	}
+}
+public static void main(String args[]) {
+	filecreator();
+	String x="string test";
+	// the string you want to write
+	filewriter(x);
+}
+}
