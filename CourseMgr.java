@@ -5,17 +5,38 @@ import Entity.IndexGroup;
 import Entity.Lesson;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class CourseMgr {
-	private List<Course> courseList;
+	static List<Course> courseList;
+	
 	public boolean checkIfCourseExists(String courseCode) {
 		//Course course = new Course();
 		//List<Course> courseList = new ArrayList<Course>();
-		return courseList.stream().anyMatch(Course -> courseCode.equals(Course.getCourseCode()));
+		//return courseList.stream().anyMatch(Course -> courseCode.equals(Course.getCourseCode()));
+		return false;
 	}
-	public void addCoursetoList(String courseCode, int numAUs, String schools, IndexGroup[] indexList, 
-			int maxLimit, Lesson[] lecture, int numTuts, int numLabs) {
-		Course newcourse = new Course(courseCode, numAUs, schools, indexList, maxLimit, lecture, numTuts, numLabs);
+	public void addCoursetoList(String courseCode) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Enter number of AUs: ");
+		int numAUs = sc.nextInt();
+		System.out.print("Enter school: ");
+		String school = sc.next();
+
+		System.out.print("Enter total number of students allowed: ");
+		int maxLimit = sc.nextInt();
+		
+		System.out.print("Enter the number of tutorials: ");
+		int numTuts = sc.nextInt();
+		System.out.print("Enter the number of labs: ");
+		int numLabs = sc.nextInt();
+		
+		//Function defined below
+		IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);
+
+		Course newcourse = new Course(courseCode, numAUs, school, indexList, maxLimit, numTuts, numLabs);
 		courseList.add(newcourse);
 	}
 	
@@ -23,6 +44,7 @@ public class CourseMgr {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
 				courseList.get(i).setAUs(newAU);
+				System.out.println("New AUs is "+ courseList.get(i).getAUs());
 				return true;
 			}
 		}
@@ -33,6 +55,7 @@ public class CourseMgr {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
 				courseList.get(i).setSchool(school);
+				System.out.println("New School is " + courseList.get(i).getSchool());
 				return true;
 			}
 		}	
@@ -43,6 +66,7 @@ public class CourseMgr {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
 				courseList.get(i).setMaxLimit(maxLimit);
+				System.out.println("New Max Limit is " + courseList.get(i).getMaxLimit());
 				return true;
 			}
 		}
@@ -53,6 +77,7 @@ public class CourseMgr {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
 				courseList.get(i).setCourseCode(newCourseCode);
+				System.out.println("New Course Code is " + courseList.get(i).getCourseCode());
 				return true;
 			}
 		}
@@ -62,7 +87,8 @@ public class CourseMgr {
 	public boolean numTuts(String courseCode, int numTuts) {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
-				courseList.get(i).setnumTuts(numTuts);
+				courseList.get(i).setNumTuts(numTuts);
+				System.out.println("New number of tutorials is " + courseList.get(i).getNumTuts());
 				return true;
 			}
 		}
@@ -72,10 +98,31 @@ public class CourseMgr {
 	public boolean numLabs(String courseCode, int numLabs) {
 		for(int i = 0; i < courseList.size(); i++) {
 			if(courseList.get(i).getCourseCode() == courseCode) {
-				courseList.get(i).setnumLabs(numLabs);
+				courseList.get(i).setNumLabs(numLabs);
+				System.out.println("New number of labs is " + courseList.get(i).getNumLabs());
 				return true;
 			}
 		}
 		return false;
+	}
+	private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
+		Scanner sc = new Scanner(System.in);
+		int numIndexes, maxLimit, indexNumber;
+		
+		
+		System.out.print("Enter number of indexes: ");
+		numIndexes = sc.nextInt();
+		System.out.print("Enter the max number of students for each index: ");
+		maxLimit = sc.nextInt();
+		IndexGroup[] indexList = new IndexGroup[numIndexes];
+		for(int i = 0; i < numIndexes; i ++) {
+			System.out.print("Enter desired index number: ");
+			indexNumber = sc.nextInt();
+			indexList[i] = new IndexGroup(courseCode, indexNumber, maxLimit, numTuts, numLabs);
+		}
+		
+		System.out.println("Done with inputting of indexes.");
+		return indexList;
+		
 	}
 }

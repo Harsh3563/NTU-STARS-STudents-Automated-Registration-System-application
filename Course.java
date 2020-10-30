@@ -1,5 +1,10 @@
 package Entity;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+
 public class Course {
 
     private String courseCode;
@@ -12,6 +17,7 @@ public class Course {
     private Lesson[] lecture;
     private int numTuts;
     private int numLabs;
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * @param courseCode the unique code for the course
@@ -28,17 +34,16 @@ public class Course {
     	this.courseCode = courseCode;
     }
     
-    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, Lesson[] lecture, int numTuts, int numLabs) {
+    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int numTuts, int numLabs) {
         this.courseCode = courseCode;
         this.numAUs = numAUs;
         this.school = school;
         this.indexList = indexList;
         this.maxLimit = maxLimit;
         this.vacancy = maxLimit;
-        //this.roster = roster;
-        this.lecture = lecture;
         this.numTuts = numTuts;
         this.numLabs = numLabs;
+        setLecture();
     }
 
     public String getCourseCode() {
@@ -52,7 +57,7 @@ public class Course {
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
     }
-
+    
     public int getAUs() {
     	return this.numAUs;
     }
@@ -60,7 +65,7 @@ public class Course {
     public void setAUs(int numAUs) {
     	this.numAUs = numAUs;
     }
-    
+
     public String getSchool() {
         return this.school;
     }
@@ -96,6 +101,25 @@ public class Course {
     public void setVacancy(int vacancy) {
         this.vacancy = vacancy;
     }
+    
+    
+    public void setLecture() {
+    	Scanner sc = new Scanner(System.in);
+    	LocalTime startTime;
+        LocalTime endTime;
+        String day;
+    	System.out.println("Setting of Lectures");
+    	for(int i = 0; i < numLabs; i++) {
+    		System.out.println("For lecture " + i);
+    		System.out.print("Enter Start time(hh:mm:ss): ");
+    		startTime = LocalTime.parse(sc.next(), timeFormatter);
+    		System.out.print("Enter End Time: ");
+    		endTime = LocalTime.parse(sc.next(), timeFormatter);
+    		System.out.print("Enter Day of the week: ");
+    		day = sc.next();
+    		lecture[i] = new Lesson(startTime, endTime, day);
+    	}
+    }
 
 
     public int getMaxLimit() {
@@ -110,7 +134,7 @@ public class Course {
         this.maxLimit = maxLimit;
     }
 
-    public int getnumLabs() {
+    public int getNumLabs() {
         return numLabs;
     }
 
@@ -118,12 +142,12 @@ public class Course {
      *
      * @param hasLab boolean variable which indicates whether the course has labs
      */
-    public void setnumLabs(int numLabs) {
+    public void setNumLabs(int numLabs) {
         this.numLabs = numLabs;
     }
 
 
-    public int getnumTuts() {
+    public int getNumTuts() {
         return numTuts;
     }
 
@@ -131,7 +155,7 @@ public class Course {
      *
      * @param hasTut boolean variable which indicates whether the course has tutorials
      */
-    public void setnumTuts(int numTuts) {
+    public void setNumTuts(int numTuts) {
         this.numTuts = numTuts;
     }
 

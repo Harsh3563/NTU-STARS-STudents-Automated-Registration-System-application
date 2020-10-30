@@ -1,5 +1,6 @@
 package Entity;
 
+import java.time.Duration;
 import java.time.LocalTime;
 
 public class Lesson {
@@ -15,13 +16,13 @@ public class Lesson {
         SUNDAY
     }
     private Day day;
-    private int duration;
+    private Duration duration;
 
-    public Lesson(LocalTime startTime, LocalTime endTime, String day, int duration){
+    public Lesson(LocalTime startTime, LocalTime endTime, String day){
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = Day.valueOf(day);
-        this.duration = duration;
+        duration = Duration.between(endTime, startTime);
     }
 
     public LocalTime getStartTime() {
@@ -48,11 +49,11 @@ public class Lesson {
         this.day = day;
     }
 
-    public int getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDuration(Duration duration) {
+    	duration = Duration.between(endTime, startTime);
     }
 }
