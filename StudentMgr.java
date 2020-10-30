@@ -1,7 +1,6 @@
 package Control;
 
 import Entity.Student;
-import jdk.vm.ci.meta.Local;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +29,10 @@ public class StudentMgr {
         for(Object o: objectList){
             studentList.add((Student)o);
         }
+        if(studentList.isEmpty()){
+            System.out.println("There are no student records.");
+            return false;
+        }
         System.out.println("*****************************************");
         System.out.printf("%-15s %-7s %-15s\n", "Name", "Gender", "Nationality");
         System.out.println("*****************************************");
@@ -39,14 +42,10 @@ public class StudentMgr {
         }
         return true;
     }
-    public static boolean editStudentAccessPeriod(String matricNo, LocalDate startDate, LocalDate endDate,
-       LocalTime startTime, LocalTime endTime) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IOException, InvocationTargetException {
-        Student s = new Student(matricNo);
-        int index = FileManipMgr.checkIfObjectExists(s);
-        if(index == -1){
-            System.out.println("Student record does not exist!");
-            return false;
-        }
+    public static boolean editStudentAccessPeriod(int index, LocalDate startDate, LocalDate endDate,
+       LocalTime startTime, LocalTime endTime) throws ClassNotFoundException, NoSuchMethodException,
+            IllegalAccessException, IOException, InvocationTargetException {
+
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setStartDate(startDate);
@@ -55,5 +54,42 @@ public class StudentMgr {
         s1.setEndTime(endTime);
         FileManipMgr.editObjectRecord(s1, index);
         return true;
+    }
+    public static boolean displayEveryPossibleStudentDetail() throws ClassNotFoundException, NoSuchMethodException {
+        List<Student> studentList= new ArrayList<>();
+        Class student = Class.forName("Entity.Student");
+        Method studentMethod = student.getMethod("downcast", Object.class);
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
+        for(Object o: objectList){
+            studentList.add((Student)o);
+        }
+        if(studentList.isEmpty()){
+            System.out.println("There are no student records.");
+            return false;
+        }
+        System.out.println("*****************************************");
+        System.out.printf("%-15s %-7s %-15s\n", "Name", "Gender", "Nationality");
+        System.out.println("*****************************************");
+        for(Student s: studentList){
+            //System.out.println(s);
+            s.displayEveryDetail();
+        }
+        return true;
+    }
+
+    public static boolean updateStudentDetails (String name, String nationality,
+           char gender, int index) throws ClassNotFoundException, NoSuchMethodException,
+            IllegalAccessException, IOException, InvocationTargetException{
+
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
+        Student s1 = (Student)objectList.get(index);
+        s1.setName(name);
+        s1.setNationality(nationality);
+        s1.setGender(gender);
+        FileManipMgr.editObjectRecord(s1, index);
+        return true;
+    }
+    public static int checkIfStudentExists(Student s){
+        return(FileManipMgr.checkIfObjectExists(s));
     }
 }
