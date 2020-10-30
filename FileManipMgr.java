@@ -13,6 +13,11 @@ import java.util.List;
 
 public class FileManipMgr {
 
+    /**
+     * helper method to determine correct database based on object type
+     * @param object
+     * @return
+     */
     public static String checkTypeOfObject(Object object){
         if(object instanceof Student)
             return "student.dat";
@@ -22,6 +27,12 @@ public class FileManipMgr {
             return "indexgrp.dat";
         return "Error!";
     }
+
+    /**
+     * helper method to return an identifying number associated with instance type of an object
+     * @param object
+     * @return
+     */
     public static int convertObjectToType(Object object){
         if(object instanceof Student)
             return 1;
@@ -31,6 +42,12 @@ public class FileManipMgr {
             return 3;
         return -1;
     }
+
+    /**
+     * method to check if an object record exists in the database
+     * @param object
+     * @return
+     */
     public static int checkIfObjectExists(Object object){
         String file = checkTypeOfObject(object);
         FileInputStream foStream = null;
@@ -60,6 +77,12 @@ public class FileManipMgr {
         }
         return -1;
     }
+
+    /**
+     * method to read all objects from a file
+     * @param file
+     * @return
+     */
     public static List<Object> readObjectsFromFile(String file){
         FileInputStream foStream = null;
         List<Object> objects = new ArrayList<>();
@@ -92,15 +115,21 @@ public class FileManipMgr {
         }
         return objects;
     }
-    public static boolean addObjectToFile(Object object) throws ClassNotFoundException, NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException, IOException {
-        List<Object> objects = new ArrayList<>();
-        String file = checkTypeOfObject(object);
-        objects = readObjectsFromFile(file);
-        objects.add(object);
-        for(Object o: objects){
-            System.out.println(o);
-        }
+
+    /**
+     * helper method to write a list of objects to the correct file
+     * @param objects
+     * @param object
+     * @param file
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws IOException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static boolean writeObjectsToFile(List<Object> objects, Object object, String file) throws
+            ClassNotFoundException, NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
         FileOutputStream foStream = null;
         BufferedOutputStream boStream = null;
         ObjectOutputStream ooStream = null;
@@ -124,18 +153,63 @@ public class FileManipMgr {
         for(Object o: objects){
             switch (requiredType){
                 case 1: Student s = (Student) studentMethod.invoke(null, o);
-                        ooStream.writeObject(s);
-                        break;
+                    ooStream.writeObject(s);
+                    break;
                 case 2: Course c = (Course) courseMethod.invoke(null, o);
-                        ooStream.writeObject(c);
-                        break;
+                    ooStream.writeObject(c);
+                    break;
                 case 3: IndexGroup i = (IndexGroup) indexMethod.invoke(null, o);
-                        ooStream.writeObject(i);
-                        break;
+                    ooStream.writeObject(i);
+                    break;
             }
         }
         ooStream.close();
+        return true;
+    }
+
+    /**
+     * method to add an object record to a file
+     * @param object
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
+    public static boolean addObjectToFile(Object object) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException, IOException {
+        List<Object> objects = new ArrayList<>();
+        String file = checkTypeOfObject(object);
+        objects = readObjectsFromFile(file);
+        objects.add(object);
+        for(Object o: objects){
+            System.out.println(o);
+        }
+        writeObjectsToFile(objects, object, file);
         System.out.println("Records successfully added!");
+        return true;
+    }
+
+    /**
+     * method to edit an object record in a file
+     * @param object
+     * @param index
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws IOException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static boolean editObjectRecord(Object object, int index) throws ClassNotFoundException,
+            NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
+        List<Object> objects = new ArrayList<>();
+        String file = checkTypeOfObject(object);
+        objects = readObjectsFromFile(file);
+        objects.set(index, object);
+        writeObjectsToFile(objects, object, file);
+        System.out.println("The record has been successully modified.");
         return true;
     }
 }
