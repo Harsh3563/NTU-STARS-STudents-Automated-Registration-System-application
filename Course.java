@@ -28,14 +28,14 @@ public class Course {
     	this.courseCode = courseCode;
     }
     
-    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int vacancy, Student[] roster, Lesson[] lecture, int numTuts, int numLabs) {
+    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, Lesson[] lecture, int numTuts, int numLabs) {
         this.courseCode = courseCode;
         this.numAUs = numAUs;
         this.school = school;
         this.indexList = indexList;
         this.maxLimit = maxLimit;
-        this.vacancy = vacancy;
-        this.roster = roster;
+        this.vacancy = maxLimit;
+        //this.roster = roster;
         this.lecture = lecture;
         this.numTuts = numTuts;
         this.numLabs = numLabs;
