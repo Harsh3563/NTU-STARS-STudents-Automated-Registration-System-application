@@ -53,6 +53,14 @@ public class Course {
         this.courseCode = courseCode;
     }
 
+    public int getAUs() {
+    	return this.numAUs;
+    }
+    
+    public void setAUs(int numAUs) {
+    	this.numAUs = numAUs;
+    }
+    
     public String getSchool() {
         return this.school;
     }
