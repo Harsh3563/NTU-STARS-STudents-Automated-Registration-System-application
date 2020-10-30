@@ -30,6 +30,10 @@ public class Student implements Serializable {
         endTime = LocalTime.of(22, 0, 0);
     }
 
+    public Student(String matricNo) {
+        this.matricNumber = matricNo;
+    }
+
     public String getName() {
         return name;
     }
@@ -100,10 +104,20 @@ public class Student implements Serializable {
     public static Student downcast(Object object){
         return (Student)(object);
     }
-    public boolean equals(Student s){
-        return (this.matricNumber.equals(s.getMatricNumber()));
+    public boolean equals(Object s){
+        return (this.matricNumber.equals(((Student)s).getMatricNumber()));
     }
-
+    public void displayEveryDetail(){
+        System.out.println(this.name);
+        System.out.println(this.gender);
+        System.out.println(this.nationality);
+        System.out.println(this.matricNumber);
+        System.out.println(this.startDate);
+        System.out.println(this.endDate);
+        System.out.println(this.startTime);
+        System.out.println(this.endTime);
+        System.out.println(this.AUsRegistered);
+    }
     public void displayDetails() {
         System.out.printf("%-15s %-7s %-15s\n", this.name, this.gender, this.nationality);
     }
