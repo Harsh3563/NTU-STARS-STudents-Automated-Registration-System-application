@@ -1,36 +1,44 @@
 package Entity;
 
-import java.io.Serializable;
-import java.time.LocalTime;
-
-public class Course implements Serializable {
+public class Course {
 
     private String courseCode;
+    private int numAUs;
     private String school;
-    private IndexGroup[] indexList = new IndexGroup[15];
+    private IndexGroup[] indexList;
     private int maxLimit;
     private int vacancy;
     private Student[] roster;
-    private boolean hasLab;
-    private boolean hasTut;
+    private Lesson[] lecture;
+    private int numTuts;
+    private int numLabs;
 
     /**
      * @param courseCode the unique code for the course
      * @param school the school by which the course is offered
+     * @param indexList the list of index groups which the course is composed of
      * @param maxLimit the maximum number of students that can be enrolled in this course
      * @param vacancy the number of vacancies for the course
+     * @param roster list of all the students that are enrolled in the course
      * @param hasLab boolean variable which indicates whether the course has labs
      * @param hasTut boolean variable which indicates whether the course has tutorials
      */
-    public Course(String courseCode, String school, int maxLimit, int vacancy, boolean hasLab,
-                  boolean hasTut) {
+    
+    public Course(String courseCode) {
+    	this.courseCode = courseCode;
+    }
+    
+    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int vacancy, Student[] roster, Lesson[] lecture, int numTuts, int numLabs) {
         this.courseCode = courseCode;
+        this.numAUs = numAUs;
         this.school = school;
+        this.indexList = indexList;
         this.maxLimit = maxLimit;
-        this.roster = new Student[maxLimit];
         this.vacancy = vacancy;
-        this.hasLab = hasLab;
-        this.hasTut = hasTut;
+        this.roster = roster;
+        this.lecture = lecture;
+        this.numTuts = numTuts;
+        this.numLabs = numLabs;
     }
 
     public String getCourseCode() {
@@ -94,38 +102,32 @@ public class Course implements Serializable {
         this.maxLimit = maxLimit;
     }
 
-    public boolean isHasLab() {
-        return hasLab;
+    public int getnumLabs() {
+        return numLabs;
     }
 
     /**
      *
      * @param hasLab boolean variable which indicates whether the course has labs
      */
-    public void setHasLab(boolean hasLab) {
-        this.hasLab = hasLab;
+    public void setnumLabs(int numLabs) {
+        this.numLabs = numLabs;
     }
 
 
-    public boolean isHasTut() {
-        return hasTut;
+    public int getnumTuts() {
+        return numTuts;
     }
 
     /**
      *
      * @param hasTut boolean variable which indicates whether the course has tutorials
      */
-    public void setHasTut(boolean hasTut) {
-        this.hasTut = hasTut;
+    public void setnumTuts(int numTuts) {
+        this.numTuts = numTuts;
     }
 
     public Student[] getRoster() {
         return roster;
-    }
-    public boolean equals (Course c){
-        return (this.courseCode.equals(c.getCourseCode()));
-    }
-    public static Course downcast(Object object){
-        return (Course)(object);
     }
 }
