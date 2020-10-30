@@ -72,6 +72,8 @@ public class FileManipMgr {
                     return counter;
                 counter += 1;
             }
+        } catch(EOFException e){
+            return -1;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -183,9 +185,9 @@ public class FileManipMgr {
         String file = checkTypeOfObject(object);
         objects = readObjectsFromFile(file);
         objects.add(object);
-        for(Object o: objects){
+        /*for(Object o: objects){
             System.out.println(o);
-        }
+        }*/
         writeObjectsToFile(objects, object, file);
         System.out.println("Records successfully added!");
         return true;
