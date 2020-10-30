@@ -1,10 +1,14 @@
 package Control;
 
 import Entity.Student;
+import jdk.vm.ci.meta.Local;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,23 @@ public class StudentMgr {
             //System.out.println(s);
             s.displayDetails();
         }
+        return true;
+    }
+    public static boolean editStudentAccessPeriod(String matricNo, LocalDate startDate, LocalDate endDate,
+       LocalTime startTime, LocalTime endTime) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IOException, InvocationTargetException {
+        Student s = new Student(matricNo);
+        int index = FileManipMgr.checkIfObjectExists(s);
+        if(index == -1){
+            System.out.println("Student record does not exist!");
+            return false;
+        }
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
+        Student s1 = (Student)objectList.get(index);
+        s1.setStartDate(startDate);
+        s1.setEndDate(endDate);
+        s1.setStartTime(startTime);
+        s1.setEndTime(endTime);
+        FileManipMgr.editObjectRecord(s1, index);
         return true;
     }
 }
