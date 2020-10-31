@@ -32,9 +32,11 @@ public class IndexGroup implements Serializable {
         this.maxLimit = maxLimit;
         this.vacancy = maxLimit;
         this.studentList = new Student[maxLimit];
-        tutorial = new Lesson[numTuts];
+        this.numTuts = numTuts;
+        tutorial = new Lesson[this.numTuts];
         setTutorials();
-        lab = new Lesson[numLabs];
+        this.numLabs = numLabs;
+        lab = new Lesson[this.numLabs];
         setLabs();
     }
 

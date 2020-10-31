@@ -81,8 +81,12 @@ public class CourseApp {
 			if(!manager.changeCourseCode(courseCode, newCourseCode))
 				System.out.println("Course does not exist!");
 			break;
+		case 8:
+			manager.printCourses();
+			break;
 		default:
-			System.out.println("Default");
+			System.out.println("Thank you for using STARS!!!\n"
+					+ "Have a good day!");
 		}
 		}while(choice != 9);
 	}

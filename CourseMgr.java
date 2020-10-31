@@ -4,11 +4,13 @@ import Entity.Course;
 import Entity.IndexGroup;
 import Entity.Lesson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CourseMgr {
-	static List<Course> courseList;
+	static List<Course> courseList = new ArrayList<>();
+
 	
 	public boolean checkIfCourseExists(String courseCode) {
 		//Course course = new Course();
@@ -32,11 +34,13 @@ public class CourseMgr {
 		int numTuts = sc.nextInt();
 		System.out.print("Enter the number of labs: ");
 		int numLabs = sc.nextInt();
+		System.out.print("Enter the number of lectures: ");
+		int numLecs = sc.nextInt();
 		
 		//Function defined below
-		IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);
+		IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);//Ask for tutorial and lab timings
 
-		Course newcourse = new Course(courseCode, numAUs, school, indexList, maxLimit, numTuts, numLabs);
+		Course newcourse = new Course(courseCode, numAUs, school, indexList, maxLimit, numTuts, numLabs,numLecs);//ask for lecture timings
 		courseList.add(newcourse);
 	}
 	
@@ -105,11 +109,23 @@ public class CourseMgr {
 		}
 		return false;
 	}
+	
+	public void printCourses() {
+		for(int i = 0; i < courseList.size();i++) {
+			System.out.println("Course Code: " + courseList.get(i).getCourseCode());
+			System.out.println("Number of AUs: " + courseList.get(i).getAUs());
+			System.out.println("School: " + courseList.get(i).getSchool());
+			System.out.println("Max Limit: " + courseList.get(i).getMaxLimit());
+			System.out.println("Number of Tutorials: " + courseList.get(i).getNumTuts());
+			System.out.println("Number of Labs: " + courseList.get(i).getNumLabs());
+			System.out.println("Number of Vacancies: " + courseList.get(i).getVacancy());
+		}
+	}
+	
 	private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
 		Scanner sc = new Scanner(System.in);
 		int numIndexes, maxLimit, indexNumber;
-		
-		
+
 		System.out.print("Enter number of indexes: ");
 		numIndexes = sc.nextInt();
 		System.out.print("Enter the max number of students for each index: ");

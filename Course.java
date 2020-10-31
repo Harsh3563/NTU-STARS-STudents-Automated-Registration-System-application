@@ -17,6 +17,7 @@ public class Course {
     private Lesson[] lecture;
     private int numTuts;
     private int numLabs;
+    private int numLecs;
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
@@ -34,7 +35,7 @@ public class Course {
     	this.courseCode = courseCode;
     }
     
-    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int numTuts, int numLabs) {
+    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int numTuts, int numLabs, int numLecs) {
         this.courseCode = courseCode;
         this.numAUs = numAUs;
         this.school = school;
@@ -43,6 +44,8 @@ public class Course {
         this.vacancy = maxLimit;
         this.numTuts = numTuts;
         this.numLabs = numLabs;
+        this.numLecs = numLecs;
+        lecture = new Lesson[this.numLecs];
         setLecture();
     }
 
