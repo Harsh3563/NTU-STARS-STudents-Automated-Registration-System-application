@@ -1,11 +1,12 @@
 package Entity;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
-public class Course {
+public class Course implements Serializable {
 
     private String courseCode;
     private int numAUs;
@@ -18,7 +19,6 @@ public class Course {
     private int numTuts;
     private int numLabs;
     private int numLecs;
-    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * @param courseCode the unique code for the course
@@ -30,11 +30,11 @@ public class Course {
      * @param hasLab boolean variable which indicates whether the course has labs
      * @param hasTut boolean variable which indicates whether the course has tutorials
      */
-    
+
     public Course(String courseCode) {
-    	this.courseCode = courseCode;
+        this.courseCode = courseCode;
     }
-    
+
     public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int numTuts, int numLabs, int numLecs) {
         this.courseCode = courseCode;
         this.numAUs = numAUs;
@@ -60,13 +60,13 @@ public class Course {
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
     }
-    
+
     public int getAUs() {
-    	return this.numAUs;
+        return this.numAUs;
     }
-    
+
     public void setAUs(int numAUs) {
-    	this.numAUs = numAUs;
+        this.numAUs = numAUs;
     }
 
     public String getSchool() {
@@ -104,24 +104,25 @@ public class Course {
     public void setVacancy(int vacancy) {
         this.vacancy = vacancy;
     }
-    
-    
+
+
     public void setLecture() {
-    	Scanner sc = new Scanner(System.in);
-    	LocalTime startTime;
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        Scanner sc = new Scanner(System.in);
+        LocalTime startTime;
         LocalTime endTime;
         String day;
-    	System.out.println("Setting of Lectures");
-    	for(int i = 0; i < numLabs; i++) {
-    		System.out.println("For lecture " + i);
-    		System.out.print("Enter Start time(hh:mm:ss): ");
-    		startTime = LocalTime.parse(sc.next(), timeFormatter);
-    		System.out.print("Enter End Time: ");
-    		endTime = LocalTime.parse(sc.next(), timeFormatter);
-    		System.out.print("Enter Day of the week: ");
-    		day = sc.next();
-    		lecture[i] = new Lesson(startTime, endTime, day);
-    	}
+        System.out.println("Setting of Lectures");
+        for(int i = 0; i < numLabs; i++) {
+            System.out.println("For lecture " + i);
+            System.out.print("Enter Start time(hh:mm:ss): ");
+            startTime = LocalTime.parse(sc.next(), timeFormatter);
+            System.out.print("Enter End Time: ");
+            endTime = LocalTime.parse(sc.next(), timeFormatter);
+            System.out.print("Enter Day of the week: ");
+            day = sc.next();
+            lecture[i] = new Lesson(startTime, endTime, day);
+        }
     }
 
 
@@ -156,7 +157,7 @@ public class Course {
 
     /**
      *
-     * @param hasTut boolean variable which indicates whether the course has tutorials
+     * @param numTuts integer variable which indicates number of tutorials
      */
     public void setNumTuts(int numTuts) {
         this.numTuts = numTuts;
@@ -164,5 +165,8 @@ public class Course {
 
     public Student[] getRoster() {
         return roster;
+    }
+    public static Course downcast(Object object){
+        return (Course)(object);
     }
 }
