@@ -11,15 +11,25 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CourseMgr {
-    static List<Course> courseList = new ArrayList<>();
 
+    static List<Course> courseList = new ArrayList<>();
+	public void createCourseList() {
+		List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+		for(Object o: objectList){
+			courseList.add((Course)o);
+		}
+    }
 
     public boolean checkIfCourseExists(String courseCode) {
-        //Course course = new Course();
-        //List<Course> courseList = new ArrayList<Course>();
-        //return courseList.stream().anyMatch(Course -> courseCode.equals(Course.getCourseCode()));
+    	Course course = new Course(courseCode);
+        for(int i = 0; i < courseList.size(); i++) {
+            if(courseList.get(i).getCourseCode().equals(courseCode)) {
+            	return true;
+            }
+        }
         return false;
     }
+    
     public void addCoursetoList(String courseCode) {
 
         Scanner sc = new Scanner(System.in);
@@ -43,6 +53,7 @@ public class CourseMgr {
         IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);//Ask for tutorial and lab timings
 
         Course newcourse = new Course(courseCode, numAUs, school, indexList, maxLimit, numTuts, numLabs,numLecs);//ask for lecture timings
+        courseList.add(newcourse);
         try {
             FileManipMgr.addObjectToFile(newcourse);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException
@@ -51,66 +62,96 @@ public class CourseMgr {
         }
     }
 
-    public boolean changeAU(String courseCode, int newAU) {
+    public boolean changeAU(String courseCode, int newAU) throws ClassNotFoundException, NoSuchMethodException, 
+    															InvocationTargetException, IllegalAccessException, 
+    															IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setAUs(newAU);
                 System.out.println("New AUs is "+ courseList.get(i).getAUs());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeSchool(String courseCode, String school) {
+    public boolean changeSchool(String courseCode, String school) throws ClassNotFoundException, NoSuchMethodException, 
+    																	InvocationTargetException, IllegalAccessException, 
+    																	IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setSchool(school);
                 System.out.println("New School is " + courseList.get(i).getSchool());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeMaxLimit(String courseCode, int maxLimit) {
+    public boolean changeMaxLimit(String courseCode, int maxLimit) throws ClassNotFoundException, NoSuchMethodException, 
+    																	InvocationTargetException, IllegalAccessException, 
+    																	IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setMaxLimit(maxLimit);
                 System.out.println("New Max Limit is " + courseList.get(i).getMaxLimit());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeCourseCode(String courseCode, String newCourseCode) {
+    public boolean changeCourseCode(String courseCode, String newCourseCode) throws ClassNotFoundException, NoSuchMethodException, 
+    																				InvocationTargetException, IllegalAccessException, 
+    																				IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setCourseCode(newCourseCode);
                 System.out.println("New Course Code is " + courseList.get(i).getCourseCode());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeNumTuts(String courseCode, int numTuts) {
+    public boolean changeNumTuts(String courseCode, int numTuts) throws ClassNotFoundException, NoSuchMethodException, 
+    																	InvocationTargetException, IllegalAccessException, 
+    																	IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setNumTuts(numTuts);
                 System.out.println("New number of tutorials is " + courseList.get(i).getNumTuts());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeNumLabs(String courseCode, int numLabs) {
+    public boolean changeNumLabs(String courseCode, int numLabs) throws ClassNotFoundException, NoSuchMethodException, 
+    																	InvocationTargetException, IllegalAccessException, 
+    																	IOException {
+    	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
                 courseList.get(i).setNumLabs(numLabs);
                 System.out.println("New number of labs is " + courseList.get(i).getNumLabs());
+                course = courseList.get(i);
+                updateCourse(course, i);
                 return true;
             }
         }
@@ -128,7 +169,15 @@ public class CourseMgr {
             System.out.println("Number of Vacancies: " + courseList.get(i).getVacancy());
         }
     }
-
+    
+    public void updateCourse(Course course, int index) throws ClassNotFoundException, NoSuchMethodException, 
+    														InvocationTargetException, IllegalAccessException, 
+    														IOException {
+    	Object o = new Object();
+    	o = (Course)course;
+    	FileManipMgr.editObjectRecord(o, index);
+	}
+    
     private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
         Scanner sc = new Scanner(System.in);
         int numIndexes, maxLimit, indexNumber;

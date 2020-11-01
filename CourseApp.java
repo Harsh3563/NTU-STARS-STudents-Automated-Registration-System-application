@@ -1,5 +1,7 @@
 package Boundary;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 import Control.CourseMgr;
@@ -9,7 +11,9 @@ import Entity.Student;
 
 public class CourseApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, 
+												InvocationTargetException, IllegalAccessException, 
+												IOException{
         // TODO Auto-generated method stub
         int choice;
         String courseCode, newCourseCode;
@@ -22,7 +26,8 @@ public class CourseApp {
         int numLabs;
 
         CourseMgr manager = new CourseMgr();
-
+        manager.createCourseList();
+        
         Scanner sc = new Scanner(System.in);
 
         do {
