@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
- 
+ // this is do allow user to WRITE into a precreated file, if that is not required you can just extract out the read function below and use it 
+//for comparison
 public class PasswordMgr implements Serializable{
 
 public static void main (String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException{
