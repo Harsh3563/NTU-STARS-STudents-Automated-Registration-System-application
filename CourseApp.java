@@ -35,7 +35,8 @@ public class CourseApp {
 				+ "[5] Change Course Code\n"
 				+ "[6] Change Number of Tutorials\n"
 				+ "[7] Change Number of Labs\n"
-				+ "[8] Print all course codes");
+				+ "[8] Print all course codes\n"
+				+ "[9] Exit the program");
 		choice = sc.nextInt();
 		switch(choice) {
 		case 1: //Adding Course to List
@@ -79,6 +80,24 @@ public class CourseApp {
 			System.out.print("Enter new course code: ");
 			newCourseCode = sc.next();
 			if(!manager.changeCourseCode(courseCode, newCourseCode))
+				System.out.println("Course does not exist!");
+			break;
+		case 6: //Change number of tutorials
+			System.out.println("Changing of number of tutorials may cause problems!!");
+			System.out.print("Enter desired course code: ");
+			courseCode = sc.next();
+			System.out.print("Enter new number of tutorials: ");
+			numTuts = sc.nextInt();
+			if(!manager.changeNumTuts(courseCode, numTuts))
+				System.out.println("Course does not exist!");
+			break;
+		case 7://Change number of labs
+			System.out.println("Changing of number of labs may cause problems!!");
+			System.out.print("Enter desired course code: ");
+			courseCode = sc.next();
+			System.out.print("Enter new number of labs: ");
+			numLabs = sc.nextInt();
+			if(!manager.changeNumLabs(courseCode, numLabs))
 				System.out.println("Course does not exist!");
 			break;
 		case 8:
