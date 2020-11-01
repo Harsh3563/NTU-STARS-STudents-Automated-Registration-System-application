@@ -34,21 +34,6 @@ public class Hashingtable {
 		}
 		return hexor.toString();
 	}
-	/* 
-	public static void main(String[] args) {
-		Scanner scf=new Scanner(System.in);
-		String smh256;
-		String in;
-		try {
-		System.out.println("Please enter password:");
-		in=scf.next();
-		smh256=hexercon(hasho(in));
-		System.out.println(smh256);
-	}catch(NoSuchAlgorithmException n) {
-		System.out.println("Error detected");
-	}
-	}
-	*/
 
 }
 	
