@@ -128,12 +128,12 @@ public class CourseMgr {
 
 		System.out.print("Enter number of indexes: ");
 		numIndexes = sc.nextInt();
-		System.out.print("Enter the max number of students for each index: ");
-		maxLimit = sc.nextInt();
 		IndexGroup[] indexList = new IndexGroup[numIndexes];
 		for(int i = 0; i < numIndexes; i ++) {
 			System.out.print("Enter desired index number: ");
 			indexNumber = sc.nextInt();
+			System.out.print("Enter the max number of students for this index: ");
+			maxLimit = sc.nextInt();
 			indexList[i] = new IndexGroup(courseCode, indexNumber, maxLimit, numTuts, numLabs);
 		}
 		
