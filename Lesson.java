@@ -1,9 +1,10 @@
 package Entity;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
-public class Lesson {
+public class Lesson implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;
     enum Day{
@@ -54,6 +55,6 @@ public class Lesson {
     }
 
     public void setDuration(Duration duration) {
-    	duration = Duration.between(endTime, startTime);
+        duration = Duration.between(endTime, startTime);
     }
 }
