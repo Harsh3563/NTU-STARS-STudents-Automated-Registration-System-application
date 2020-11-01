@@ -132,8 +132,12 @@ public class CourseMgr {
     	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
+            	int oldNumTuts = courseList.get(i).getNumTuts();
                 courseList.get(i).setNumTuts(numTuts);
                 System.out.println("New number of tutorials is " + courseList.get(i).getNumTuts());
+                if(numTuts > oldNumTuts) {
+                    courseList.get(i).setIndex(inputIndexList(courseCode, numTuts, courseList.get(i).getNumLabs()));
+                }
                 course = courseList.get(i);
                 updateCourse(course, i);
                 return true;
@@ -148,8 +152,12 @@ public class CourseMgr {
     	Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
+            	int oldNumLabs = courseList.get(i).getNumLabs();
                 courseList.get(i).setNumLabs(numLabs);
                 System.out.println("New number of labs is " + courseList.get(i).getNumLabs());
+                if(numLabs > oldNumLabs) {
+                    courseList.get(i).setIndex(inputIndexList(courseCode, courseList.get(i).getNumTuts(), numLabs));
+                }
                 course = courseList.get(i);
                 updateCourse(course, i);
                 return true;
