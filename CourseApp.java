@@ -1,15 +1,19 @@
 package Boundary;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
 import java.util.Scanner;
 
 import Control.CourseMgr;
+import Entity.Course;
 import Entity.IndexGroup;
 import Entity.Lesson;
 import Entity.Student;
 
 public class CourseApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IOException, IllegalAccessException, InvocationTargetException {
         // TODO Auto-generated method stub
         int choice;
         String courseCode, newCourseCode;
@@ -26,7 +30,7 @@ public class CourseApp {
         Scanner sc = new Scanner(System.in);
 
         do {
-            System.out.println("Course Application\n"
+            System.out.println("\nCourse Application\n"
                     + "Select your choice:\n"
                     + "[1] Add course to List\n"
                     + "[2] Change number of AUs\n"
@@ -42,7 +46,7 @@ public class CourseApp {
                 case 1: //Adding Course to List
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
-                    if(manager.checkIfCourseExists(courseCode)) {
+                    if(manager.checkIfCourseExists(courseCode) != -1) {
                         System.out.println("Course Code already exists!");
                         break;
                     }
@@ -53,10 +57,12 @@ public class CourseApp {
                 case 2://Changing number of AUs
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    int index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new number of AUs: ");
                     numAUs = sc.nextInt();
-                    if(!manager.changeAU(courseCode, numAUs))
-                        System.out.println("Course does not exist!");
+                    manager.changeAU(courseCode, numAUs, index);
                     break;
                 case 3://Changing School
                     System.out.print("Enter desired course code: ");
