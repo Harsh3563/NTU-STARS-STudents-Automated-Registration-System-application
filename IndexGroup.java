@@ -11,7 +11,7 @@ public class IndexGroup implements Serializable {
     private int indexNumber;
     private int maxLimit;
     private int vacancy;
-    private Student[] studentList;
+    private String[] studentList;
     private int numTuts;
     private int numLabs;
     private Lesson[] tutorial;
