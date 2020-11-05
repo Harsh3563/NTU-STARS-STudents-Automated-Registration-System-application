@@ -14,7 +14,7 @@ public class Course implements Serializable {
     private IndexGroup[] indexList;
     private int maxLimit;
     private int vacancy;
-    private Student[] roster;
+    private String[] roster;
     private Lesson[] lecture;
     private int numTuts;
     private int numLabs;
@@ -163,10 +163,20 @@ public class Course implements Serializable {
         this.numTuts = numTuts;
     }
 
-    public Student[] getRoster() {
+    public String[] getRoster() {
         return roster;
     }
+
     public static Course downcast(Object object){
         return (Course)(object);
+    }
+
+    public void displayDetails(){
+        System.out.printf("%-12s %-9s %-9s %-9s %-15s %-15s %-15s\n", this.courseCode, this.numAUs,
+                this.school, this.maxLimit, this.numTuts, this.numLabs, this.vacancy);
+    }
+
+    public boolean equals(Object c){
+        return this.courseCode.equals(((Course)c).getCourseCode());
     }
 }
