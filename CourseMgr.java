@@ -3,6 +3,7 @@ package Control;
 import Entity.Course;
 import Entity.IndexGroup;
 import Entity.Lesson;
+import Entity.Student;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -11,15 +12,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CourseMgr {
+
     static List<Course> courseList = new ArrayList<>();
-
-
-    public boolean checkIfCourseExists(String courseCode) {
-        //Course course = new Course();
-        //List<Course> courseList = new ArrayList<Course>();
-        //return courseList.stream().anyMatch(Course -> courseCode.equals(Course.getCourseCode()));
-        return false;
+    public void createCourseList() {
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        for(Object o: objectList){
+            courseList.add((Course)o);
+        }
     }
+
+    public int checkIfCourseExists(String courseCode) {
+        Course course = new Course(courseCode);
+        return FileManipMgr.checkIfObjectExists(course);
+    }
+
     public void addCoursetoList(String courseCode) {
 
         Scanner sc = new Scanner(System.in);
@@ -43,6 +49,7 @@ public class CourseMgr {
         IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);//Ask for tutorial and lab timings
 
         Course newcourse = new Course(courseCode, numAUs, school, indexList, maxLimit, numTuts, numLabs,numLecs);//ask for lecture timings
+        courseList.add(newcourse);
         try {
             FileManipMgr.addObjectToFile(newcourse);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException
@@ -51,83 +58,115 @@ public class CourseMgr {
         }
     }
 
-    public boolean changeAU(String courseCode, int newAU) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                courseList.get(i).setAUs(newAU);
-                System.out.println("New AUs is "+ courseList.get(i).getAUs());
-                return true;
-            }
-        }
-        return false;
+    public boolean changeAU(String courseCode, int newAU, int index) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        course.setAUs(newAU);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
-    public boolean changeSchool(String courseCode, String school) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                courseList.get(i).setSchool(school);
-                System.out.println("New School is " + courseList.get(i).getSchool());
-                return true;
-            }
-        }
-        return false;
+    public boolean changeSchool(String courseCode, String school, int index) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        course.setSchool(school);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
-    public boolean changeMaxLimit(String courseCode, int maxLimit) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                courseList.get(i).setMaxLimit(maxLimit);
-                System.out.println("New Max Limit is " + courseList.get(i).getMaxLimit());
-                return true;
-            }
-        }
-        return false;
+    public boolean changeMaxLimit(String courseCode, int maxLimit, int index) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        course.setMaxLimit(maxLimit);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
-    public boolean changeCourseCode(String courseCode, String newCourseCode) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                courseList.get(i).setCourseCode(newCourseCode);
-                System.out.println("New Course Code is " + courseList.get(i).getCourseCode());
-                return true;
-            }
-        }
-        return false;
+    public boolean changeCourseCode(String courseCode, String newCourseCode, int index) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        course.setCourseCode(courseCode);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
-    public boolean changeNumTuts(String courseCode, int numTuts) {
+    public boolean changeNumTuts(String courseCode, int numTuts) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
+                int oldNumTuts = courseList.get(i).getNumTuts();
                 courseList.get(i).setNumTuts(numTuts);
                 System.out.println("New number of tutorials is " + courseList.get(i).getNumTuts());
+                if(numTuts > oldNumTuts) {
+                    courseList.get(i).setIndex(inputIndexList(courseCode, numTuts, courseList.get(i).getNumLabs()));
+                }
+                course = courseList.get(i);
+                updateCourse(i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean changeNumLabs(String courseCode, int numLabs) {
+    public boolean changeNumLabs(String courseCode, int numLabs) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        Course course = new Course(courseCode);
         for(int i = 0; i < courseList.size(); i++) {
             if(courseList.get(i).getCourseCode().equals(courseCode)) {
+                int oldNumLabs = courseList.get(i).getNumLabs();
                 courseList.get(i).setNumLabs(numLabs);
                 System.out.println("New number of labs is " + courseList.get(i).getNumLabs());
+                if(numLabs > oldNumLabs) {
+                    courseList.get(i).setIndex(inputIndexList(courseCode, courseList.get(i).getNumTuts(), numLabs));
+                }
+                course = courseList.get(i);
+                updateCourse(i);
                 return true;
             }
         }
         return false;
     }
 
-    public void printCourses() {
-        for(int i = 0; i < courseList.size();i++) {
-            System.out.println("Course Code: " + courseList.get(i).getCourseCode());
-            System.out.println("Number of AUs: " + courseList.get(i).getAUs());
-            System.out.println("School: " + courseList.get(i).getSchool());
-            System.out.println("Max Limit: " + courseList.get(i).getMaxLimit());
-            System.out.println("Number of Tutorials: " + courseList.get(i).getNumTuts());
-            System.out.println("Number of Labs: " + courseList.get(i).getNumLabs());
-            System.out.println("Number of Vacancies: " + courseList.get(i).getVacancy());
+    public static boolean printCourses() {
+        courseList = new ArrayList<>();
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        for(Object o: objectList){
+            courseList.add((Course) o);
         }
+        if (courseList.isEmpty()){
+            System.out.println("There are no course records.");
+            return false;
+        }
+        System.out.println("******************************************************************************************************************");
+        System.out.printf("%-10s %-9s %-9s %-9s %-15s %-15s %-16s\n", "Course Code", "No. of AUs",
+                "School", "Max Limit", "No. of Tuts", "No. of Labs", "No. of Vacancies");
+        System.out.println("******************************************************************************************************************");
+        for (Course c: courseList){
+            c.displayDetails();
+        }
+        return true;
     }
+
+    /*public void updateCourse(int index) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException,
+            IOException {
+        //FileManipMgr.writeObjectsToFile(courseList, index);
+    }*/
 
     private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
         Scanner sc = new Scanner(System.in);
