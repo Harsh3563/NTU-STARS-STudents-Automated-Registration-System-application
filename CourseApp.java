@@ -28,7 +28,7 @@ public class CourseApp {
         CourseMgr manager = new CourseMgr();
 
         Scanner sc = new Scanner(System.in);
-
+        int index;
         do {
             System.out.println("\nCourse Application\n"
                     + "Select your choice:\n"
@@ -57,7 +57,7 @@ public class CourseApp {
                 case 2://Changing number of AUs
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
-                    int index = manager.checkIfCourseExists(courseCode);
+                    index = manager.checkIfCourseExists(courseCode);
                     if(index == -1)
                         System.out.println("Course does not exist!");
                     System.out.print("Enter new number of AUs: ");
@@ -67,47 +67,60 @@ public class CourseApp {
                 case 3://Changing School
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new school: ");
                     school = sc.next();
-                    if(!manager.changeSchool(courseCode, school))
-                        System.out.println("Course does not exist!");
+                    manager.changeSchool(courseCode, school, index);
                     break;
                 case 4://Change max limit
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new max number of students: ");
                     maxLimit = sc.nextInt();
-                    if(!manager.changeMaxLimit(courseCode, maxLimit))
-                        System.out.println("Course does not exist!");
+                    manager.changeMaxLimit(courseCode, maxLimit, index);
                     break;
                 case 5: //Change course code
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new course code: ");
                     newCourseCode = sc.next();
-                    if(!manager.changeCourseCode(courseCode, newCourseCode))
-                        System.out.println("Course does not exist!");
+                    manager.changeCourseCode(courseCode, newCourseCode, index);
                     break;
                 case 6: //Change number of tutorials
                     System.out.println("Changing of number of tutorials may cause problems!!");
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new number of tutorials: ");
                     numTuts = sc.nextInt();
-                    if(!manager.changeNumTuts(courseCode, numTuts))
-                        System.out.println("Course does not exist!");
+                    manager.changeNumTuts(courseCode, numTuts, index);
                     break;
                 case 7://Change number of labs
                     System.out.println("Changing of number of labs may cause problems!!");
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
+                    index = manager.checkIfCourseExists(courseCode);
+                    if(index == -1)
+                        System.out.println("Course does not exist!");
                     System.out.print("Enter new number of labs: ");
                     numLabs = sc.nextInt();
-                    if(!manager.changeNumLabs(courseCode, numLabs))
-                        System.out.println("Course does not exist!");
+                    manager.changeNumLabs(courseCode, numLabs, index);
                     break;
                 case 8:
                     manager.printCourses();
+                    break;
+                case 100:
+                    manager.printEveryCourseDetailPossible();
                     break;
                 default:
                     System.out.println("Thank you for using STARS!!!\n"
