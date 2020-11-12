@@ -16,7 +16,7 @@ public class StudentApp {
         String name, matricNumber, nationality, networkUsername, emailID;
         LocalDate startDate, endDate;
         LocalTime startTime, endTime;
-        int index;
+        int index, AUsRegistered;
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         char gender;
@@ -25,9 +25,19 @@ public class StudentApp {
         int choice = 0;
         do{
             System.out.println("Enter the choice according to the following menu:");
-            System.out.println("1. Add a student record.\n2. Display all student records.\n" +
-                    "3. Edit Student Access Period\n4. Update Student Details\n" +
-                    "6. Exit\n100. Display every student detail.");
+            System.out.println("1. Add a student record.\n"
+            		+ "2. Display all student records.\n"
+                    + "3. Edit Student Access Period\n"
+                    + "4. Update Student Details\n"
+                    + "5. Change Matriculation Number\n"
+                    + "6. Change Name of student"
+                    + "7. Change Network USername\n"
+                    + "8. Change email ID\n"
+                    + "9. Change Nationality\n"
+                    + "10. Change Gender\n"
+                    + "11. Change AUs Registered\n"
+                    + "99. Exit\n"
+                    + "100. Display every student detail.");
             choice = sc.nextInt();
             switch(choice){
                 case 1: System.out.println("Enter the matriculation number of the student.");
@@ -90,9 +100,98 @@ public class StudentApp {
                         gender = sc.next().charAt(0);
                         StudentMgr.updateStudentDetails(name, nationality, gender, index);
                         break;
+                case 5://Change Matric Number
+                	 System.out.println("Enter the matriculation number.");
+                     matricNumber = sc.next();
+                     index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                     if(index == -1){
+                         System.out.println("Student record does not exist. Please ensure you have" +
+                                 "entered the correct matriculation number.");
+                         break;
+                     }
+                     StudentMgr.changeMatricNumber(matricNumber, index);
+                	break;
+                case 6://Change Name
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter new name of student: ");
+                    name = sc.next();
+                    StudentMgr.changeName(name, index);
+                    break;
+                case 7://Change Network Username
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter the new Network Username: ");
+                    networkUsername = sc.next();
+                    StudentMgr.changeNetworkUsername(networkUsername, index);
+                    break;
+                case 8: //Change email ID
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter new email ID: ");
+                    emailID = sc.next();
+                    StudentMgr.changeEmailID(emailID, index);
+                    break;
+                case 9://Change Nationality
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter new nationality: ");
+                    nationality = sc.next();
+                    StudentMgr.changeNationality(nationality, index);
+                    break;
+                case 10: //Change Gender
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter new gender: ");
+                    gender = sc.next().charAt(0);
+                    StudentMgr.changeGender(gender, index);
+                    break;
+                case 11://Change AU registered
+                	System.out.println("Enter the matriculation number.");
+                    matricNumber = sc.next();
+                    index = StudentMgr.checkIfStudentExists(new Student(matricNumber));
+                    if(index == -1){
+                        System.out.println("Student record does not exist. Please ensure you have" +
+                                "entered the correct matriculation number.");
+                        break;
+                    }
+                    System.out.print("Enter new AU registered: ");
+                    AUsRegistered = sc.nextInt();
+                    StudentMgr.changeAUsRegistered(AUsRegistered, index);
+                    break;
                 case 100: StudentMgr.displayEveryPossibleStudentDetail();
                           break;
-                case 6: System.exit(0);
+                case 99: System.exit(0);
             }
         }while(choice != -1);
     }
