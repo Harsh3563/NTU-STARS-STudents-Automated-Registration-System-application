@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class StudentApp {
     public static void main(String args[]) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
-        String name, matricNumber, nationality;
+        String name, matricNumber, nationality, networkUsername, emailID;
         LocalDate startDate, endDate;
         LocalTime startTime, endTime;
         int index;
@@ -34,11 +34,15 @@ public class StudentApp {
                     matricNumber = sc.next();
                     System.out.println("Enter the name of the student.");
                     name = sc.next();
+                    System.out.println("Enter the email ID.");
+                    emailID = sc.next();
                     System.out.println("Enter the nationality of the student.");
                     nationality = sc.next();
                     System.out.println("Enter the gender of the student.");
                     gender = sc.next().charAt(0);
-                    s = new Student(name, matricNumber, nationality, gender, 0);
+                    System.out.println("Enter the network username.");
+                    networkUsername = sc.next();
+                    s = new Student(name, matricNumber, emailID, nationality, gender, 0, networkUsername);
                     StudentMgr.addStudent(s);
                     break;
                 case 2: StudentMgr.displayAllStudentRecords();
