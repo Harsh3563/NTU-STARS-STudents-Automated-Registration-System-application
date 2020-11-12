@@ -159,4 +159,8 @@ public class Student implements Serializable {
     public void addCourseToWaitingList(String courseCode, int indexNum){
         this.coursesWaiting.put(courseCode, indexNum);
     }
+    
+    public HashMap getcoursesRegistered() {
+    	return coursesRegistered;
+    }
 }

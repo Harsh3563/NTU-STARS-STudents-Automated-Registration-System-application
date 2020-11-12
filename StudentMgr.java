@@ -1,6 +1,7 @@
 package Control;
 
 import Entity.Student;
+import Entity.Course;
 
 import java.io.File;
 import java.io.IOException;
@@ -171,5 +172,13 @@ public class StudentMgr {
         objectList.set(index, s1);
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
+    }
+    
+    public static boolean swapIndex(Student s1, Student s2, Course course) {
+    	Course course1 = (Course)s1.getcoursesRegistered().get(course);
+    	Course course2 = (Course)s2.getcoursesRegistered().get(course);
+    	s1.getcoursesRegistered().replace(course, course2);
+    	s2.getcoursesRegistered().replace(course, course1);
+    	return true;
     }
 }
