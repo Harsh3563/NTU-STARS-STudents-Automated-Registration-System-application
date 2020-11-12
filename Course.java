@@ -3,17 +3,20 @@ package Entity;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
 public class Course implements Serializable {
 
     private String courseCode;
+    private String courseTitle;
     private int numAUs;
     private String school;
     private IndexGroup[] indexList;
     private int maxLimit;
     private int vacancy;
+    private int numStudentsRegistered;
     private String[] roster;
     private Lesson[] lecture;
     private int numTuts;
@@ -35,12 +38,16 @@ public class Course implements Serializable {
         this.courseCode = courseCode;
     }
 
-    public Course(String courseCode, int numAUs, String school, IndexGroup[] indexList, int maxLimit, int numTuts, int numLabs, int numLecs) {
+    public Course(String courseCode, String courseTitle, int numAUs, String school, IndexGroup[] indexList,
+                  int maxLimit, int numTuts, int numLabs, int numLecs) {
         this.courseCode = courseCode;
+        this.courseTitle = courseTitle;
         this.numAUs = numAUs;
         this.school = school;
         this.indexList = indexList;
         this.maxLimit = maxLimit;
+        this.roster = new String[maxLimit];
+        this.numStudentsRegistered = 0;
         this.vacancy = maxLimit;
         this.numTuts = numTuts;
         this.numLabs = numLabs;
@@ -113,7 +120,7 @@ public class Course implements Serializable {
         LocalTime endTime;
         String day;
         System.out.println("Setting of Lectures");
-        for(int i = 0; i < numLabs; i++) {
+        for(int i = 0; i < numLecs; i++) {
             System.out.println("For lecture " + i);
             System.out.print("Enter Start time(hh:mm:ss): ");
             startTime = LocalTime.parse(sc.next(), timeFormatter);
@@ -155,6 +162,14 @@ public class Course implements Serializable {
         return numTuts;
     }
 
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
     /**
      *
      * @param numTuts integer variable which indicates number of tutorials
@@ -172,11 +187,39 @@ public class Course implements Serializable {
     }
 
     public void displayDetails(){
-        System.out.printf("%-12s %-9s %-9s %-9s %-15s %-15s %-15s\n", this.courseCode, this.numAUs,
-                this.school, this.maxLimit, this.numTuts, this.numLabs, this.vacancy);
+        System.out.printf("%-9s %20s %-9s %-9s %-9s %-15s %-15s %-15s\n", this.courseCode, this.courseTitle,
+                this.numAUs, this.school, this.maxLimit, this.numTuts, this.numLabs, this.vacancy);
     }
 
     public boolean equals(Object c){
         return this.courseCode.equals(((Course)c).getCourseCode());
+    }
+
+    public Lesson[] getLectureLessons(){
+        return lecture;
+    }
+
+    public void addStudent(String matricNum) {
+        this.roster[this.numStudentsRegistered] = matricNum;
+        this.numStudentsRegistered++;
+        this.vacancy--;
+    }
+
+    public void displayEveryDetail() {
+        System.out.println(this.courseCode);
+        System.out.println(this.courseTitle);
+        System.out.println(this.numAUs);
+        System.out.println(this.school);
+        System.out.println(this.maxLimit);
+        System.out.println(this.numTuts);
+        System.out.println(this.numLabs);
+        System.out.println(this.vacancy);
+        System.out.println(this.numStudentsRegistered);
+        for(int i=0; i<roster.length; ++i){
+            System.out.println(roster[i]);
+        }
+        for(int i=0; i<indexList.length; ++i){
+            indexList[i].printEveryDetail();
+        }
     }
 }
