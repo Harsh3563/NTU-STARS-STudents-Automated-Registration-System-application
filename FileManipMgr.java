@@ -1,9 +1,6 @@
 package Control;
 
-import Entity.Course;
-import Entity.IndexGroup;
-import Entity.Lesson;
-import Entity.Student;
+import Entity.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +20,8 @@ public class FileManipMgr {
             return "student.dat";
         else if (object instanceof Course)
             return "course.dat";
-        else if(object instanceof IndexGroup)
-            return "indexgrp.dat";
+        else if(object instanceof Password)
+            return "password.dat";
         return "Error!";
     }
 
@@ -38,7 +35,7 @@ public class FileManipMgr {
             return 1;
         else if (object instanceof Course)
             return 2;
-        else if(object instanceof IndexGroup)
+        else if(object instanceof Password)
             return 3;
         return -1;
     }
@@ -54,14 +51,17 @@ public class FileManipMgr {
         try {
             foStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("File does not exist");
+            return -1;
+            //e.printStackTrace();
         }
         BufferedInputStream boStream = new BufferedInputStream(foStream);
         ObjectInputStream oiStream = null;
         try {
             oiStream = new ObjectInputStream(boStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return -1;
         }
         try{
             int counter = 0;
@@ -130,7 +130,7 @@ public class FileManipMgr {
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static boolean writeObjectsToFile(List<Object> objects, Object object, String file) throws
+    public static boolean writeObjectsToFile(List<Object> objects, String file) throws
             ClassNotFoundException, NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
         FileOutputStream foStream = null;
         BufferedOutputStream boStream = null;
@@ -144,7 +144,7 @@ public class FileManipMgr {
             e.printStackTrace();
             return false;
         }
-        int requiredType = convertObjectToType(object);
+        int requiredType = convertObjectToType(objects.get(0));
         Class student = Class.forName("Entity.Student");
         Class course = Class.forName("Entity.Course");
         Class indexGroup = Class.forName("Entity.IndexGroup");
@@ -154,14 +154,14 @@ public class FileManipMgr {
         System.out.println(requiredType);
         for(Object o: objects){
             switch (requiredType){
-                case 1: Student s = (Student) studentMethod.invoke(null, o);
+                case 1: Student s = (Student) o;
                     ooStream.writeObject(s);
                     break;
-                case 2: Course c = (Course) courseMethod.invoke(null, o);
+                case 2: Course c = (Course) o;
                     ooStream.writeObject(c);
                     break;
-                case 3: IndexGroup i = (IndexGroup) indexMethod.invoke(null, o);
-                    ooStream.writeObject(i);
+                case 3: Password p = (Password) o;
+                    ooStream.writeObject(p);
                     break;
             }
         }
@@ -188,30 +188,20 @@ public class FileManipMgr {
         /*for(Object o: objects){
             System.out.println(o);
         }*/
-        writeObjectsToFile(objects, object, file);
+        writeObjectsToFile(objects, file);
         System.out.println("Records successfully added!");
         return true;
     }
 
-    /**
-     * method to edit an object record in a file
-     * @param object
-     * @param index
-     * @return
-     * @throws ClassNotFoundException
-     * @throws NoSuchMethodException
-     * @throws IOException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
-    public static boolean editObjectRecord(Object object, int index) throws ClassNotFoundException,
+
+    /*public static boolean editObjectRecord(Object object, int index) throws ClassNotFoundException,
             NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
         List<Object> objects = new ArrayList<>();
         String file = checkTypeOfObject(object);
         objects = readObjectsFromFile(file);
         objects.set(index, object);
-        writeObjectsToFile(objects, object, file);
+        writeObjectsToFile(objects, file);
         System.out.println("The record has been successully modified.");
         return true;
-    }
+    }*/
 }
