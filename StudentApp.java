@@ -30,8 +30,8 @@ public class StudentApp {
                     + "3. Edit Student Access Period\n"
                     + "4. Update Student Details\n"
                     + "5. Change Matriculation Number\n"
-                    + "6. Change Name of student"
-                    + "7. Change Network USername\n"
+                    + "6. Change Name of student\n"
+                    + "7. Change Network Username\n"
                     + "8. Change email ID\n"
                     + "9. Change Nationality\n"
                     + "10. Change Gender\n"
@@ -109,6 +109,8 @@ public class StudentApp {
                                  "entered the correct matriculation number.");
                          break;
                      }
+                     System.out.print("Enter new Matriculation number: ");
+                     matricNumber = sc.next();
                      StudentMgr.changeMatricNumber(matricNumber, index);
                 	break;
                 case 6://Change Name
