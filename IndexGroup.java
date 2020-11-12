@@ -3,6 +3,9 @@ package Entity;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class IndexGroup implements Serializable {
@@ -11,7 +14,10 @@ public class IndexGroup implements Serializable {
     private int indexNumber;
     private int maxLimit;
     private int vacancy;
+    private int numStudentsRegistered;
+    private int numStudentsWaiting;
     private String[] studentList;
+    private String[] studentsWaiting;
     private int numTuts;
     private int numLabs;
     private Lesson[] tutorial;
@@ -30,7 +36,10 @@ public class IndexGroup implements Serializable {
         this.indexNumber = indexNumber;
         this.maxLimit = maxLimit;
         this.vacancy = maxLimit;
-        this.studentList = new Student[maxLimit];
+        this.numStudentsRegistered = 0;
+        this.numStudentsWaiting = 0;
+        this.studentList = new String[maxLimit];
+        this.studentsWaiting = new String[200];
         this.numTuts = numTuts;
         tutorial = new Lesson[this.numTuts];
         setTutorials();
@@ -95,7 +104,7 @@ public class IndexGroup implements Serializable {
         this.indexNumber = indexNumber;
     }
 
-    public Student[] getStudentList() {
+    public String[] getStudentList() {
         return studentList;
     }
 
@@ -110,5 +119,65 @@ public class IndexGroup implements Serializable {
     }
     public static IndexGroup downcast(Object object){
         return (IndexGroup) (object);
+    }
+
+    public int getVacancy() {
+        return vacancy;
+    }
+
+    public void setVacancy(int vacancy) {
+        this.vacancy = vacancy;
+    }
+
+
+
+    public int getNumStudentsRegistered() {
+        return numStudentsRegistered;
+    }
+
+    public void setNumStudentsRegistered(int numStudentsRegistered) {
+        this.numStudentsRegistered = numStudentsRegistered;
+    }
+
+    public int getNumStudentsWaiting() {
+        return numStudentsWaiting;
+    }
+
+    public void setNumStudentsWaiting(int numStudentsWaiting) {
+        this.numStudentsWaiting = numStudentsWaiting;
+    }
+    public void addStudentToWaitingList(String matricNumber) {
+        this.studentsWaiting[this.numStudentsWaiting] = matricNumber;
+        this.numStudentsWaiting++;
+    }
+
+    public void addStudent(String matricNumber){
+        this.studentList[this.numStudentsRegistered] = matricNumber;
+        this.numStudentsRegistered++;
+        this.vacancy--;
+    }
+
+    public void printIndexDetails(){
+        System.out.printf("%-11s %-7s %-7s\n", this.indexNumber, this.vacancy, this.numStudentsWaiting);
+    }
+
+    public Lesson[] getLessons() {
+        List<Lesson> lessonList = new ArrayList<>(Arrays.asList(tutorial));
+        lessonList.addAll(Arrays.asList(lab));
+        Lesson[] lessons = new Lesson[lessonList.size()];
+        int count = 0;
+        for (Lesson l: lessonList){
+            lessons[count] = l;
+            count++;
+        }
+        return lessons;
+    }
+    public void printEveryDetail(){
+        System.out.println(this.indexNumber);
+        System.out.println(this.vacancy);
+        System.out.println(this.numStudentsRegistered);
+        System.out.println(this.numStudentsWaiting);
+        for(int i=0; i<numStudentsRegistered; ++i)
+            System.out.println(studentList[i]);
     }
 }
