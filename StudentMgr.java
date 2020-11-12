@@ -13,6 +13,12 @@ import java.util.List;
 
 public class StudentMgr {
     public static boolean addStudent(Student s){
+        int index = FileManipMgr.checkIfObjectExists(s);
+        if(index != -1){
+            System.out.println("Student record already exists. Make sure to enter the correct " +
+                    "matriculation number.");
+            return false;
+        }
         try {
             FileManipMgr.addObjectToFile(s);
             return true;
@@ -23,8 +29,6 @@ public class StudentMgr {
     }
     public static boolean displayAllStudentRecords() throws ClassNotFoundException, NoSuchMethodException{
         List<Student> studentList= new ArrayList<>();
-        Class student = Class.forName("Entity.Student");
-        Method studentMethod = student.getMethod("downcast", Object.class);
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         for(Object o: objectList){
             studentList.add((Student)o);
@@ -45,20 +49,18 @@ public class StudentMgr {
     public static boolean editStudentAccessPeriod(int index, LocalDate startDate, LocalDate endDate,
        LocalTime startTime, LocalTime endTime) throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, IOException, InvocationTargetException {
-
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setStartDate(startDate);
         s1.setEndDate(endDate);
         s1.setStartTime(startTime);
         s1.setEndTime(endTime);
-        FileManipMgr.editObjectRecord(s1, index);
+        objectList.set(index, s1);
+        FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
     public static boolean displayEveryPossibleStudentDetail() throws ClassNotFoundException, NoSuchMethodException {
         List<Student> studentList= new ArrayList<>();
-        Class student = Class.forName("Entity.Student");
-        Method studentMethod = student.getMethod("downcast", Object.class);
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         for(Object o: objectList){
             studentList.add((Student)o);
@@ -67,9 +69,6 @@ public class StudentMgr {
             System.out.println("There are no student records.");
             return false;
         }
-        System.out.println("*****************************************");
-        System.out.printf("%-15s %-7s %-15s\n", "Name", "Gender", "Nationality");
-        System.out.println("*****************************************");
         for(Student s: studentList){
             //System.out.println(s);
             s.displayEveryDetail();
@@ -86,10 +85,21 @@ public class StudentMgr {
         s1.setName(name);
         s1.setNationality(nationality);
         s1.setGender(gender);
-        FileManipMgr.editObjectRecord(s1, index);
+        objectList.set(index, s1);
+        FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
     public static int checkIfStudentExists(Student s){
         return(FileManipMgr.checkIfObjectExists(s));
+    }
+    public static boolean writeStudentsToFile(List<Object> studentList){
+        try {
+            FileManipMgr.writeObjectsToFile(studentList, "student.dat");
+        } catch (ClassNotFoundException | NoSuchMethodException | IOException
+                | InvocationTargetException | IllegalAccessException e) {
+            //e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
