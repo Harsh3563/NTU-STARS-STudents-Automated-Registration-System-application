@@ -7,15 +7,6 @@ import java.time.LocalTime;
 public class Lesson implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;
-    enum Day{
-        MONDAY,
-        TUESDAY,
-        WEDNESDAY,
-        THURSDAY,
-        FRIDAY,
-        SATURDAY,
-        SUNDAY
-    }
     private Day day;
     private Duration duration;
 
