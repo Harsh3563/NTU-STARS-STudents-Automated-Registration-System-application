@@ -1,6 +1,5 @@
 package Control;
 
-
 import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -22,14 +21,16 @@ public class PasswordMgr implements Serializable{
      *
      */
     private static final long serialVersionUID = 1L;
-    public static void main (String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    
+   
+    public static void Enterp () throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         PasswordMgr objectIO = new PasswordMgr();
         Scanner sc=new Scanner(System.in);
         
         String smh256,usertext="o", userdomain;
         int i=0;
         List<Object> passwordList = new ArrayList<>();
-        
+        System.out.print("This is to write into the passward.dat file to house all users, type end for username to exit");
         while(true) {
         System.out.print("Please enter Username:");
         usertext=sc.next();
@@ -48,6 +49,3 @@ public class PasswordMgr implements Serializable{
     }
         sc.close();
     }
-
-}
-
