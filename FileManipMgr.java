@@ -192,16 +192,4 @@ public class FileManipMgr {
         System.out.println("Records successfully added!");
         return true;
     }
-
-
-    /*public static boolean editObjectRecord(Object object, int index) throws ClassNotFoundException,
-            NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
-        List<Object> objects = new ArrayList<>();
-        String file = checkTypeOfObject(object);
-        objects = readObjectsFromFile(file);
-        objects.set(index, object);
-        writeObjectsToFile(objects, file);
-        System.out.println("The record has been successully modified.");
-        return true;
-    }*/
 }
