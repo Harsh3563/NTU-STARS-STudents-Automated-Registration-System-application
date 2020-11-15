@@ -3,7 +3,9 @@ package Entity;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -205,21 +207,42 @@ public class Course implements Serializable {
         this.vacancy--;
     }
 
+    public void removeStudent(String matricNum) {
+        for(int i=0; i<numStudentsRegistered; ++i)
+            if(roster[i].equals(matricNum)){
+                List<String> studList = new ArrayList<>(Arrays.asList(roster));
+                studList.remove(i);
+                int counter = 0;
+                for(String s: studList)
+                    roster[counter++] = s;
+                this.numStudentsRegistered--;
+                this.vacancy++;
+                break;
+            }
+    }
+
     public void displayEveryDetail() {
-        System.out.println(this.courseCode);
-        System.out.println(this.courseTitle);
-        System.out.println(this.numAUs);
-        System.out.println(this.school);
-        System.out.println(this.maxLimit);
-        System.out.println(this.numTuts);
-        System.out.println(this.numLabs);
-        System.out.println(this.vacancy);
-        System.out.println(this.numStudentsRegistered);
-        for(int i=0; i<roster.length; ++i){
+        System.out.println("Course Code: " + this.courseCode);
+        System.out.println("Course Title: " + this.courseTitle);
+        System.out.println("Number of AUs: " + this.numAUs);
+        System.out.println("School: " + this.school);
+        System.out.println("Max. Limit:" + this.maxLimit);
+        System.out.println("No. of Tuts: " + this.numTuts);
+        System.out.println("No. of Labs: " + this.numLabs);
+        System.out.println("Vacancy: " + this.vacancy);
+        System.out.println("No. of registered students: " + this.numStudentsRegistered);
+        System.out.println("Registered Students:");
+        for(int i=0; i<numStudentsRegistered; ++i){
             System.out.println(roster[i]);
         }
+        System.out.println("Index groups details: ");
         for(int i=0; i<indexList.length; ++i){
             indexList[i].printEveryDetail();
+        }
+        System.out.println("Lecture details: ");
+        Lesson[] lectures = getLectureLessons();
+        for(int i=0; i<lectures.length; ++i){
+            lectures[i].displayEveryDetail();
         }
     }
 }
