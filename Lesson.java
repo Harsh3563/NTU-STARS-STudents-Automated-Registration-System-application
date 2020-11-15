@@ -48,4 +48,9 @@ public class Lesson implements Serializable {
     public void setDuration(Duration duration) {
         duration = Duration.between(endTime, startTime);
     }
+    public void displayEveryDetail(){
+        System.out.println(startTime);
+        System.out.println(endTime);
+        System.out.println(day.toString());
+    }
 }
