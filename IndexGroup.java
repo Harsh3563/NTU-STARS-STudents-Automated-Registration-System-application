@@ -173,11 +173,64 @@ public class IndexGroup implements Serializable {
         return lessons;
     }
     public void printEveryDetail(){
-        System.out.println(this.indexNumber);
-        System.out.println(this.vacancy);
-        System.out.println(this.numStudentsRegistered);
-        System.out.println(this.numStudentsWaiting);
+        System.out.println("Index Number:" + this.indexNumber);
+        System.out.println("Vacancy" + this.vacancy);
+        System.out.println("No. of students registered" + this.numStudentsRegistered);
+        System.out.println("No. of students waiting" +this.numStudentsWaiting);
+        System.out.println("Students registered:");
         for(int i=0; i<numStudentsRegistered; ++i)
             System.out.println(studentList[i]);
+        System.out.println("Students waiting:");
+        for(int i=0; i<numStudentsWaiting; ++i)
+            System.out.println(studentsWaiting[i]);
+        System.out.println("Lessons:");
+        Lesson[] lessons = getLessons();
+        for(int i=0; i<lessons.length; ++i){
+            lessons[i].displayEveryDetail();
+        }
+    }
+
+    public String removeStudent(String matricNum, int status) {
+        int counter;
+        String matricNumOfNewStud = "NoWaiting";
+        if(status == 1){
+            List<String> studList, studList1;
+            for(int i=0; i<numStudentsRegistered; ++i){
+                if(studentList[i].equals(matricNum)) {
+                    studList = new ArrayList<>(Arrays.asList(studentList));
+                    studList.remove(i);
+                    if (this.numStudentsWaiting != 0) {
+                        studList1 = new ArrayList<>(Arrays.asList(studentsWaiting));
+                        matricNumOfNewStud = studList1.remove(0);
+                        counter = 0;
+                        for (String s : studList1)
+                            studentsWaiting[counter++] = s;
+                        studList.add(i, matricNumOfNewStud);
+                        this.numStudentsWaiting--;
+                    } else {
+                        this.numStudentsRegistered--;
+                        this.vacancy++;
+                    }
+                    counter = 0;
+                    for(String s: studList)
+                        studentList[counter++] = s;
+                    break;
+                }
+            }
+        }
+        else if(status == 2){
+            List<String> studList;
+            for(int i=0; i<numStudentsWaiting; ++i)
+                if(studentsWaiting[i].equals(matricNum)) {
+                    studList = new ArrayList<>(Arrays.asList(studentsWaiting));
+                    studList.remove(i);
+                    counter = 0;
+                    for(String s: studList)
+                        studentsWaiting[counter++] = s;
+                    this.numStudentsWaiting--;
+                    break;
+                }
+        }
+        return matricNumOfNewStud;
     }
 }
