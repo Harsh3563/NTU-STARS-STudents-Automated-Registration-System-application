@@ -174,11 +174,15 @@ public class StudentRegistrationMgr {
         System.out.println("Total AUs Registered: " + student.getAUsRegistered());
         return true;
     }
-    public static boolean changeIndexGroup(Student student, String courseCode, int newIndexNum){
+    public static boolean changeIndexGroup(Student student, String courseCode,
+                                           int newIndexNum, int oldIndexNum){
         boolean flag = deregisterStudentFromCourse(student, courseCode);
         if(!flag)
             return false;
+        //System.out.println("Hey");
         flag = registerStudentForCourse(student, courseCode, newIndexNum);
+        if(!flag)
+            registerStudentForCourse(student, courseCode, oldIndexNum);
         return flag;
     }
 }
