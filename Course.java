@@ -184,6 +184,10 @@ public class Course implements Serializable {
         return roster;
     }
 
+    public int getNumStudentRegistered() {
+        return numStudentsRegistered;
+    }
+
     public static Course downcast(Object object){
         return (Course)(object);
     }
@@ -245,4 +249,6 @@ public class Course implements Serializable {
             lectures[i].displayEveryDetail();
         }
     }
+
+
 }
