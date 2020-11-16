@@ -9,6 +9,8 @@ public class Lesson implements Serializable {
     private LocalTime endTime;
     private Day day;
     private Duration duration;
+    WeekSchedule weekT;
+    private Venue Locate;
 
     public Lesson(LocalTime startTime, LocalTime endTime, String day){
         this.startTime = startTime;
@@ -44,6 +46,21 @@ public class Lesson implements Serializable {
     public Duration getDuration() {
         return duration;
     }
+    
+    public WeekSchedule getweektype() {
+        return weekT;
+    }
+    public Venue getlocation() {
+        return Locate;
+    }
+    public void setWeekschedule(WeekSchedule Wek ) {
+       this.weekT=Wek;
+    }
+    public void setlocation(Venue ve ) {
+        this.Locate=ve;
+     }
+    
+    
 
     public void setDuration(Duration duration) {
         duration = Duration.between(endTime, startTime);
