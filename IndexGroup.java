@@ -174,16 +174,16 @@ public class IndexGroup implements Serializable {
     }
     public void printEveryDetail(){
         System.out.println("Index Number:" + this.indexNumber);
-        System.out.println("Vacancy" + this.vacancy);
-        System.out.println("No. of students registered" + this.numStudentsRegistered);
-        System.out.println("No. of students waiting" +this.numStudentsWaiting);
+        System.out.println("Vacancy: " + this.vacancy);
+        System.out.println("No. of students registered: " + this.numStudentsRegistered);
+        System.out.println("No. of students waiting: " +this.numStudentsWaiting);
         System.out.println("Students registered:");
         for(int i=0; i<numStudentsRegistered; ++i)
             System.out.println(studentList[i]);
-        System.out.println("Students waiting:");
+        System.out.println("Students waiting: ");
         for(int i=0; i<numStudentsWaiting; ++i)
             System.out.println(studentsWaiting[i]);
-        System.out.println("Lessons:");
+        System.out.println("Lessons: ");
         Lesson[] lessons = getLessons();
         for(int i=0; i<lessons.length; ++i){
             lessons[i].displayEveryDetail();
