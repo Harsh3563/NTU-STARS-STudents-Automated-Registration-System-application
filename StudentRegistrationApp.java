@@ -11,7 +11,7 @@ import java.util.*;
 
 public class StudentRegistrationApp {
     public static void main(String args[]){
-        int choice, choice1, counter;
+        int choice, choice1, counter, count_curr_index;
         Iterator<Map.Entry<String, Integer>> it;
         HashMap<String, Integer> courses;
         List<Course> courseList;
@@ -112,20 +112,26 @@ public class StudentRegistrationApp {
                         }
                         courseList = CourseMgr.obtainCourseList();
                         course = courseList.get(index_course);
+                        count_curr_index = 0;
                         int oldIndexNum = courses.get(course.getCourseCode());
                         System.out.println("Your current index number: " + oldIndexNum);
                         indexList = course.getIndexList();
                         counter = 1;
                         System.out.println("Choose among the following other index numbers.");
                         for(IndexGroup i: indexList) {
-                            if(i.getIndexNumber() == oldIndexNum)
+                            if(i.getIndexNumber() == oldIndexNum) {
+                                count_curr_index = counter;
                                 continue;
+                            }
                             System.out.println(counter + ". " + i.getIndexNumber());
                             counter++;
                         }
                         choice1 = sc.nextInt();
-                        IndexGroup i = indexList[choice1];
-                        StudentRegistrationMgr.changeIndexGroup(s, course.getCourseCode(), i.getIndexNumber());
+                        if(choice1 >= count_curr_index)
+                            choice1++;
+                        IndexGroup i = indexList[choice1 - 1];
+                        StudentRegistrationMgr.changeIndexGroup(s, course.getCourseCode(),
+                                i.getIndexNumber(), oldIndexNum);
                         break;
                 case 6:
                     System.exit(0);
