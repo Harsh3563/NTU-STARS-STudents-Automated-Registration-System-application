@@ -12,6 +12,9 @@ public class Lesson implements Serializable {
     WeekSchedule weekT;
     private Venue Locate;
 
+    private Venue vent;
+    private WeekSchedule Weksc;
+    
     public Lesson(LocalTime startTime, LocalTime endTime, String day){
         this.startTime = startTime;
         this.endTime = endTime;
