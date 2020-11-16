@@ -118,6 +118,10 @@ public class Student implements Serializable {
     public TimeTable getTimeTable(){
         return timeTable;
     }
+    
+    public void setTimeTable(TimeTable timeTable){
+        this.timeTable = timeTable;
+    }
 
     public String getNetworkUsername() {
         return this.networkUsername;
@@ -271,5 +275,9 @@ public class Student implements Serializable {
                 indexNum = l.getValue();
             }
         }*/
+    }
+    
+    public HashMap getcoursesRegistered() {
+    	return coursesRegistered;
     }
 }

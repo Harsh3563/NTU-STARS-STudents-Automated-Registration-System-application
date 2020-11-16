@@ -2,6 +2,8 @@ package Control;
 
 import Entity.*;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class StudentRegistrationMgr {
@@ -208,6 +210,22 @@ public class StudentRegistrationMgr {
         deregisterStudentFromCourse(student, courseCode);
         //System.out.println("Hey");
         registerStudentForCourse(student, courseCode, newIndexNum);
+        return true;
+    }
+    
+    public static boolean swapIndex(Student s1, Student s2, int index1, int index2, Course course) throws ClassNotFoundException, NoSuchMethodException, 
+    																									InvocationTargetException, IllegalAccessException, IOException {
+    	Course course1 = (Course)s1.getcoursesRegistered().get(course);
+    	Course course2 = (Course)s2.getcoursesRegistered().get(course);
+    	s1.getcoursesRegistered().replace(course, course2);
+    	s2.getcoursesRegistered().replace(course, course1);
+    	TimeTable temp = s1.getTimeTable();
+    	s1.setTimeTable(s2.getTimeTable());
+    	s2.setTimeTable(temp);
+    	List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
+        objectList.set(index1, s1);
+        objectList.set(index2, s2);
+        FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
 }
