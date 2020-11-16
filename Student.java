@@ -154,7 +154,11 @@ public class Student implements Serializable {
         System.out.println("Start Time: " + this.startTime);
         System.out.println("End Time: " + this.endTime);
         System.out.println("Number of AUs registered: " + this.AUsRegistered);
-        System.out.println("Time table:");
+        System.out.println("Courses Registered: ");
+        System.out.println(coursesRegistered);
+        System.out.println("Courses Waiting: ");
+        System.out.println(coursesWaiting);
+        System.out.println("Time table: ");
         this.timeTable.printTimeTable();
     }
     public void displayDetails() {
@@ -197,7 +201,7 @@ public class Student implements Serializable {
         courses.putAll(coursesRegistered);
         courses.putAll(coursesWaiting);
         return courses;
-}
+    }
 
     public Integer[] deregisterFromCourse(String courseCode, int AUs) {
         int status = -1, indexNum = 0;
