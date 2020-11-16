@@ -37,7 +37,7 @@ public class TimeTable implements Serializable {
         }
         return true;
     }
-    public boolean checkForClash(Lesson[] lessons){
+    public boolean checkForClash(Lesson[] lessons, String newCourseCode){
         Day[] dayValues = Day.values();
         for(int j = 0; j < 7; ++j){
             Iterator<Map.Entry<String[], LocalTime[]>> it = this.timeTable.get(dayValues[j]).
@@ -47,16 +47,18 @@ public class TimeTable implements Serializable {
                 LocalTime lessonStartTime = l.getValue()[0];
                 LocalTime lessonEndTime = l.getValue()[1];
                 for(int k = 0; k < lessons.length; ++k){
-                    if(dayValues[j].toString().equals(lessons[k].getDay().toString())) {
-                        LocalTime newCourseLessonStartTime = lessons[k].getStartTime();
-                        LocalTime newCourseLessonEndTime = lessons[k].getEndTime();
-                        if ((newCourseLessonStartTime.compareTo(lessonEndTime) < 0) &&
-                                (newCourseLessonEndTime.compareTo(lessonStartTime) > 0)) {
-                            System.out.println();
-                            System.out.println("Clashing Timings: New Course " + newCourseLessonStartTime + " - "
+                    if(!l.getKey()[0].equals(newCourseCode)){
+                        if(dayValues[j].toString().equals(lessons[k].getDay().toString())) {
+                            LocalTime newCourseLessonStartTime = lessons[k].getStartTime();
+                            LocalTime newCourseLessonEndTime = lessons[k].getEndTime();
+                            if ((newCourseLessonStartTime.compareTo(lessonEndTime) < 0) &&
+                                    (newCourseLessonEndTime.compareTo(lessonStartTime) > 0)) {
+                                System.out.println();
+                                System.out.println("Clashing Timings: New Course " + newCourseLessonStartTime + " - "
                                     + newCourseLessonEndTime + " and Old Course " + lessonStartTime + " - " + lessonEndTime);
-                            System.out.println("Time table clash with course code " + l.getKey()[0]);
-                            return false;
+                                System.out.println("Time table clash with course code " + l.getKey()[0]);
+                                return false;
+                            }
                         }
                     }
                 }
