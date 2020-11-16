@@ -50,6 +50,7 @@ public class StudentRegistrationMgr {
         int index_course = CourseMgr.checkIfCourseExists(courseCode);
         if(index_course == -1){
             System.out.println("Did not find course record with this course code.");
+            return false;
         }
         List<Object> studentList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s = (Student)(studentList.get(index_student));
@@ -97,7 +98,7 @@ public class StudentRegistrationMgr {
             toAddToWaitingList = true;
         }
         System.out.println(toAddToWaitingList);
-        if(!timeTable.checkForClash(lessons))
+        if(!timeTable.checkForClash(lessons, courseCode))
             return false;
         if(toAddToWaitingList){
             s.addCourseToWaitingList(courseCode, indexNum);
@@ -129,6 +130,7 @@ public class StudentRegistrationMgr {
         int index_course = CourseMgr.checkIfCourseExists(courseCode);
         if(index_course == -1){
             System.out.println("Did not find course record with this course code.");
+            return false;
         }
         List<Object> studentList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s = (Student)(studentList.get(index_student));
@@ -176,13 +178,36 @@ public class StudentRegistrationMgr {
     }
     public static boolean changeIndexGroup(Student student, String courseCode,
                                            int newIndexNum, int oldIndexNum){
-        boolean flag = deregisterStudentFromCourse(student, courseCode);
-        if(!flag)
+        int index_course = CourseMgr.checkIfCourseExists(courseCode);
+        if(index_course == -1){
+            System.out.println("Did not find course record with this course code.");
             return false;
+        }
+        List<Object> courseList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course c = (Course)(courseList.get(index_course));
+        IndexGroup i = null;
+        IndexGroup[] indexList = c.getIndexList();
+        for(IndexGroup ig: indexList){
+            if(ig.getIndexNumber() == newIndexNum)
+            {
+                i = ig;
+                break;
+            }
+        }
+        List<Lesson> lessonList = new ArrayList<>(Arrays.asList(i.getLessons()));
+        lessonList.addAll(Arrays.asList(c.getLectureLessons()));
+        Lesson[] lessons = new Lesson[lessonList.size()];
+        int counter = 0;
+        for (Lesson l: lessonList){
+            lessons[counter] = l;
+            counter++;
+        }
+        if(!student.getTimeTable().checkForClash(lessons, courseCode)) {
+            return false;
+        }
+        deregisterStudentFromCourse(student, courseCode);
         //System.out.println("Hey");
-        flag = registerStudentForCourse(student, courseCode, newIndexNum);
-        if(!flag)
-            registerStudentForCourse(student, courseCode, oldIndexNum);
-        return flag;
+        registerStudentForCourse(student, courseCode, newIndexNum);
+        return true;
     }
 }
