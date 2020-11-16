@@ -15,16 +15,13 @@ import java.util.Scanner;
 
 public class CourseMgr {
 
-    static List<Course> courseList = new ArrayList<>();
-
-
-
-    public void createCourseList() {
+    static List<Course> courseList;
+    /*public void createCourseList() {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
         for(Object o: objectList){
             courseList.add((Course)o);
         }
-    }
+    } */
 
     public static int checkIfCourseExists(String courseCode) {
         Course course = new Course(courseCode);
@@ -56,7 +53,7 @@ public class CourseMgr {
 
         Course newcourse = new Course(courseCode, courseTitle,
                 numAUs, school, indexList, maxLimit, numTuts, numLabs,numLecs);//ask for lecture timings
-        courseList.add(newcourse);
+        //courseList.add(newcourse);
         try {
             FileManipMgr.addObjectToFile(newcourse);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException
@@ -112,41 +109,39 @@ public class CourseMgr {
     public boolean changeNumTuts(String courseCode, int numTuts, int index) throws ClassNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException,
             IOException {
-        Course course = new Course(courseCode);
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                int oldNumTuts = courseList.get(i).getNumTuts();
-                courseList.get(i).setNumTuts(numTuts);
-                System.out.println("New number of tutorials is " + courseList.get(i).getNumTuts());
-                if(numTuts > oldNumTuts) {
-                    courseList.get(i).setIndex(inputIndexList(courseCode, numTuts, courseList.get(i).getNumLabs()));
-                }
-                course = courseList.get(i);
-                //updateCourse(i);
-                return true;
-            }
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        
+        int oldNumTuts = course.getNumTuts();
+        course.setNumTuts(numTuts);
+        System.out.println("New number of tutorials is " + course.getNumTuts());
+        if(numTuts > oldNumTuts) {
+            course.setIndex(inputIndexList(courseCode, numTuts, course.getNumTuts()));
         }
-        return false;
+        //course = courseList.get(i);
+        //updateCourse(i);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
     public boolean changeNumLabs(String courseCode, int numLabs, int index) throws ClassNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException,
             IOException {
-        Course course = new Course(courseCode);
-        for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getCourseCode().equals(courseCode)) {
-                int oldNumLabs = courseList.get(i).getNumLabs();
-                courseList.get(i).setNumLabs(numLabs);
-                System.out.println("New number of labs is " + courseList.get(i).getNumLabs());
-                if(numLabs > oldNumLabs) {
-                    courseList.get(i).setIndex(inputIndexList(courseCode, courseList.get(i).getNumTuts(), numLabs));
-                }
-                course = courseList.get(i);
-                //updateCourse(i);
-                return true;
-            }
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
+        Course course = (Course) objectList.get(index);
+        
+        int oldNumLabs = course.getNumLabs();
+        course.setNumLabs(numLabs);
+        System.out.println("New number of labs is " + course.getNumLabs());
+        if(numLabs > oldNumLabs) {
+            course.setIndex(inputIndexList(courseCode, numLabs, course.getNumLabs()));
         }
-        return false;
+        //course = courseList.get(i);
+        //updateCourse(i);
+        objectList.set(index, course);
+        FileManipMgr.writeObjectsToFile(objectList, "course.dat");
+        return true;
     }
 
     public static boolean printCourses() {
