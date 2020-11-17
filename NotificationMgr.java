@@ -1,3 +1,4 @@
+// For sending email notifications
 package Control;
 
 import javax.mail.*;
