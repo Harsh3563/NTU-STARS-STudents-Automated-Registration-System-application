@@ -1,5 +1,6 @@
 package Control;
 
+import Entity.Admin;
 import Entity.Password;
 import Entity.Student;
 
@@ -31,10 +32,17 @@ public class PasswordMgr implements Serializable{
     }
     public static Student retrieveStudentRecord(Password password){
         List<Object> studentList = FileManipMgr.readObjectsFromFile("student.dat");
-        for(Object o:studentList){
+        for(Object o: studentList){
             if(((Student)o).getNetworkUsername().equals(password.getUsername()))
                 return (Student)o;
         }
         return null;
+    }
+    public static Admin retrieveAdminRecord(Password password){
+        Admin a = new Admin(password.getUsername());
+        int index_admin = FileManipMgr.checkIfObjectExists(a);
+        List<Object> adminList = FileManipMgr.readObjectsFromFile("admin.dat");
+        a = (Admin) adminList.get(index_admin);
+        return a;
     }
 }
