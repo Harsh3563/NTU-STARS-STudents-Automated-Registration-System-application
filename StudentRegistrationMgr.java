@@ -2,6 +2,8 @@ package Control;
 
 import Entity.*;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class StudentRegistrationMgr {
@@ -208,6 +210,18 @@ public class StudentRegistrationMgr {
         deregisterStudentFromCourse(student, courseCode);
         //System.out.println("Hey");
         registerStudentForCourse(student, courseCode, newIndexNum);
+        return true;
+    }
+    
+    public static boolean swapIndex(Student s1, Student s2, int index1, int index2, Course course) throws ClassNotFoundException, NoSuchMethodException, 
+    																									InvocationTargetException, IllegalAccessException, IOException {
+    	String courseCode = course.getCourseCode();
+    	int cindex1 = (int)s1.getcoursesRegistered().get(courseCode);
+    	int cindex2 = (int)s2.getcoursesRegistered().get(courseCode);
+    	changeIndexGroup(s1, courseCode, cindex2, cindex1);
+    	changeIndexGroup(s2, courseCode, cindex1, cindex2);
+    	registerStudentForCourse(s1, courseCode, cindex2);
+    	registerStudentForCourse(s2, courseCode, cindex1);
         return true;
     }
 }
