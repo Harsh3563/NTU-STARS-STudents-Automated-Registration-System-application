@@ -1,13 +1,8 @@
 package Control;
 
 import Entity.Course;
-import Entity.IndexGroup;
-import Entity.Lesson;
-import Entity.Student;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +46,8 @@ public class CourseMgr {
         System.out.print("Enter the number of lectures: ");
         int numLecs = sc.nextInt();
 
-        //Function defined below
-        IndexGroup[] indexList = inputIndexList(courseCode, numTuts, numLabs);//Ask for tutorial and lab timings
-
         Course newcourse = new Course(courseCode, courseTitle,
-                numAUs, school, indexList, maxLimit, numTuts, numLabs,numLecs);//ask for lecture timings
+                numAUs, school, maxLimit, numTuts, numLabs, numLecs);//ask for lecture timings
         courseList.add(newcourse);
         try {
             FileManipMgr.addObjectToFile(newcourse);
@@ -109,7 +101,7 @@ public class CourseMgr {
         return true;
     }
 
-    public boolean changeNumTuts(String courseCode, int numTuts, int index) throws ClassNotFoundException, NoSuchMethodException,
+    /*public boolean changeNumTuts(String courseCode, int numTuts, int index) throws ClassNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException,
             IOException {
         Course course = new Course(courseCode);
@@ -127,9 +119,9 @@ public class CourseMgr {
             }
         }
         return false;
-    }
+    }*/
 
-    public boolean changeNumLabs(String courseCode, int numLabs, int index) throws ClassNotFoundException, NoSuchMethodException,
+    /*public boolean changeNumLabs(String courseCode, int numLabs, int index) throws ClassNotFoundException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException,
             IOException {
         Course course = new Course(courseCode);
@@ -147,7 +139,7 @@ public class CourseMgr {
             }
         }
         return false;
-    }
+    }*/
 
     public static boolean printCourses() {
         courseList = new ArrayList<>();
@@ -175,24 +167,7 @@ public class CourseMgr {
         //FileManipMgr.writeObjectsToFile(courseList, index);
     }*/
 
-    private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
-        Scanner sc = new Scanner(System.in);
-        int numIndexes, maxLimit, indexNumber;
 
-        System.out.print("Enter number of indexes: ");
-        numIndexes = sc.nextInt();
-        IndexGroup[] indexList = new IndexGroup[numIndexes];
-        for(int i = 0; i < numIndexes; i ++) {
-            System.out.print("Enter desired index number: ");
-            indexNumber = sc.nextInt();
-            System.out.print("Enter the max number of students for this index: ");
-            maxLimit = sc.nextInt();
-            indexList[i] = new IndexGroup(courseCode, indexNumber, maxLimit, numTuts, numLabs);
-        }
-
-        System.out.println("Done with inputting of indexes.");
-        return indexList;
-    }
     public static List<Course> obtainCourseList(){
         List<Object> objectList = FileManipMgr.readObjectsFromFile("course.dat");
         courseList = new ArrayList<>();
@@ -224,7 +199,8 @@ public class CourseMgr {
             return false;
         }
         for (Course c: courseList){
-            c.displayEveryDetail();
+            if(c != null)
+                c.displayEveryDetail();
         }
         return true;
     }
