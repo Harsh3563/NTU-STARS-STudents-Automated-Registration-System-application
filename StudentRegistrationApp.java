@@ -1,20 +1,24 @@
 package Boundary;
 
 import Control.CourseMgr;
+import Control.StudentMgr;
 import Control.FileManipMgr;
 import Control.StudentRegistrationMgr;
 import Entity.Course;
 import Entity.IndexGroup;
 import Entity.Student;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class StudentRegistrationApp {
-    public static void main(String args[]){
+    public static void main(String args[]) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException{
         int choice, choice1, counter, count_curr_index;
         Iterator<Map.Entry<String, Integer>> it;
         HashMap<String, Integer> courses;
         List<Course> courseList;
+        List<Student> studentList;
         Course course;
         IndexGroup[] indexList;
         Student s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(0);
@@ -22,7 +26,7 @@ public class StudentRegistrationApp {
         do {
             System.out.println("Enter your choice according to the following menu:");
             System.out.println("1. Register for a course.\n2. Check/Print Courses registered.\n" +
-                    "3. Deregister From a Course\n4. Change Index Number\n6. Exit");
+                    "3. Deregister From a Course\n4. Change Index Number\n5. Swap Index Number\n6. Exit");
             s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(0);
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
@@ -133,6 +137,45 @@ public class StudentRegistrationApp {
                         StudentRegistrationMgr.changeIndexGroup(s, course.getCourseCode(),
                                 i.getIndexNumber(), oldIndexNum);
                         break;
+                case 5:
+                	System.out.println("Enter Student 1: ");
+                	String student = sc.next();
+                	Student student1 = new Student(student);
+                	int index_student1 = FileManipMgr.checkIfObjectExists(student1);
+                	if(index_student1 == -1) {
+                        System.out.println("Error occurred");
+                        break;
+                	}
+                	studentList = StudentMgr.obtainStudentList();
+                	Student s1 = studentList.get(index_student1);
+                    System.out.println("Enter Student 2: ");
+                    student = sc.next();
+                    Student student2 = new Student(student);
+                	int index_student2 = FileManipMgr.checkIfObjectExists(student2);
+                	if(index_student2 == -1) {
+                        System.out.println("Error occurred");
+                        break;
+                	}
+                	Student s2 = studentList.get(index_student2);
+                	System.out.println("Enter course code to switch index: ");
+                	chosenCourse = sc.next();
+                	course = new Course(chosenCourse);
+                	index_course = FileManipMgr.checkIfObjectExists(course);
+                	if(index_course == -1) {
+                        System.out.println("Error occurred");
+                        break;
+                    }
+                    courseList = CourseMgr.obtainCourseList();
+                    course = courseList.get(index_course);
+                    //String courseCode = course.getCourseCode();
+                    /*if (s1.getcoursesRegistered().get(course)==null||s2.getcoursesRegistered().get(course)==null) {
+                    	System.out.println("Course is not registered for one or both students.");
+                    	break;
+                    }
+                    else */
+                    	StudentRegistrationMgr.swapIndex(s1, s2, index_student1, index_student2, course);
+                    break;
+                    
                 case 6:
                     System.exit(0);
                 default: System.out.println("Please enter a correct option.");

@@ -1,6 +1,7 @@
 package Control;
 
 import Entity.Student;
+import Entity.Course;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentMgr {
-    public static boolean addStudent(Student s){
+	
+	static List<Student> studentList;
+    
+	public static boolean addStudent(Student s){
         int index = FileManipMgr.checkIfObjectExists(s);
         if(index != -1){
             System.out.println("Student record already exists. Make sure to enter the correct " +
@@ -172,4 +176,14 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
+    
+    public static List<Student> obtainStudentList(){
+        List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
+        studentList = new ArrayList<>();
+        for(Object o:objectList){
+            studentList.add((Student)o);
+        }
+        return studentList;
+    }
+    
 }
