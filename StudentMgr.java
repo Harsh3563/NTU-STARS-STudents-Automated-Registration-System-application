@@ -2,10 +2,8 @@ package Control;
 
 import Entity.Student;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -95,16 +93,15 @@ public class StudentMgr {
     public static boolean writeStudentsToFile(List<Object> studentList){
         try {
             FileManipMgr.writeObjectsToFile(studentList, "student.dat");
-        } catch (ClassNotFoundException | NoSuchMethodException | IOException
-                | InvocationTargetException | IllegalAccessException e) {
+        } catch (IOException e) {
             //e.printStackTrace();
             return false;
         }
         return true;
     }
-    
+
     public static boolean changeName(String name, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setName(name);
@@ -112,9 +109,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeNetworkUsername(String networkUsername, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setNetworkUsername(networkUsername);
@@ -122,9 +119,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeMatricNumber(String matricNumber, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setMatricNumber(matricNumber);
@@ -132,9 +129,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeEmailID(String emailID, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setEmailID(emailID);
@@ -142,9 +139,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeNationality(String nationality, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setNationality(nationality);
@@ -152,9 +149,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeGender(char gender, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setGender(gender);
@@ -162,9 +159,9 @@ public class StudentMgr {
         FileManipMgr.writeObjectsToFile(objectList, "student.dat");
         return true;
     }
-    
+
     public static boolean changeAUsRegistered(int AUsRegistered, int index)throws ClassNotFoundException, NoSuchMethodException,
-    IllegalAccessException, IOException, InvocationTargetException {
+            IllegalAccessException, IOException, InvocationTargetException {
         List<Object> objectList = FileManipMgr.readObjectsFromFile("student.dat");
         Student s1 = (Student)objectList.get(index);
         s1.setAUsRegistered(AUsRegistered);
