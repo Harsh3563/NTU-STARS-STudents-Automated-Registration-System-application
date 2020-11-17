@@ -66,7 +66,8 @@ public class IndexGroup implements Serializable {
         Scanner sc = new Scanner(System.in);
         LocalTime startTime;
         LocalTime endTime;
-        String day;
+        String day, venue;
+        WeeklySchedule weeklySchedule;
         System.out.println("Setting of Tutorials");
         for(int i = 0; i < numTuts; i++) {
             System.out.println("For tutorial " + i);
@@ -76,7 +77,12 @@ public class IndexGroup implements Serializable {
             endTime = LocalTime.parse(sc.next(), timeFormatter);
             System.out.print("Enter Day of the week: ");
             day = sc.next();
-            tutorial[i] = new Lesson(startTime, endTime, day);
+            sc.nextLine();
+            System.out.println("Enter the venue of this lesson.");
+            venue = sc.nextLine();
+            System.out.println("Choose whether the lesson is for ODD/EVEN/BOTH weeks.");
+            weeklySchedule = WeeklySchedule.chooseWeek();
+            tutorial[i] = new Lesson(startTime, endTime, day, venue, weeklySchedule, LessonType.TUTORIAL);
         }
     }
 
@@ -85,7 +91,8 @@ public class IndexGroup implements Serializable {
         Scanner sc = new Scanner(System.in);
         LocalTime startTime;
         LocalTime endTime;
-        String day;
+        String day, venue;
+        WeeklySchedule weeklySchedule;
         System.out.println("Setting of Labs");
         for(int i = 0; i < numLabs; i++) {
             System.out.println("For lab " + i);
@@ -95,7 +102,12 @@ public class IndexGroup implements Serializable {
             endTime = LocalTime.parse(sc.next(), timeFormatter);
             System.out.print("Enter Day of the week: ");
             day = sc.next();
-            lab[i] = new Lesson(startTime, endTime, day);
+            sc.nextLine();
+            System.out.println("Enter the venue of this lesson.");
+            venue = sc.nextLine();
+            System.out.println("Choose whether the lesson is for ODD/EVEN/BOTH weeks.");
+            weeklySchedule = WeeklySchedule.chooseWeek();
+            lab[i] = new Lesson(startTime, endTime, day, venue, weeklySchedule, LessonType.LAB);
         }
     }
 
@@ -146,6 +158,11 @@ public class IndexGroup implements Serializable {
     public void setNumStudentsWaiting(int numStudentsWaiting) {
         this.numStudentsWaiting = numStudentsWaiting;
     }
+
+    private void setStudentsRegistered(String[] otherStudList) {
+        this.studentList = otherStudList;
+    }
+
     public void addStudentToWaitingList(String matricNumber) {
         this.studentsWaiting[this.numStudentsWaiting] = matricNumber;
         this.numStudentsWaiting++;
@@ -172,23 +189,25 @@ public class IndexGroup implements Serializable {
         }
         return lessons;
     }
-    public void printEveryDetail(){
-        System.out.println("Index Number:" + this.indexNumber);
-        System.out.println("Vacancy: " + this.vacancy);
-        System.out.println("No. of students registered: " + this.numStudentsRegistered);
-        System.out.println("No. of students waiting: " +this.numStudentsWaiting);
-        System.out.println("Students registered:");
-        for(int i=0; i<numStudentsRegistered; ++i)
-            System.out.println(studentList[i]);
-        System.out.println("Students waiting: ");
-        for(int i=0; i<numStudentsWaiting; ++i)
-            System.out.println(studentsWaiting[i]);
-        System.out.println("Lessons: ");
-        Lesson[] lessons = getLessons();
-        for(int i=0; i<lessons.length; ++i){
-            lessons[i].displayEveryDetail();
+
+    public void changeStudent(String oldMatricNum, String newMatricNum){
+        List<String> studList;
+        int count;
+        for(int i=0; i<numStudentsRegistered; ++i){
+            if(studentList[i].equals(oldMatricNum)){
+                studList = new ArrayList<>(Arrays.asList(studentList));
+                studList.set(i, newMatricNum);
+                count = 0;
+                for(String student: studList)
+                    studentList[count++] = student;
+                break;
+            }
         }
     }
+
+
+
+
 
     public String removeStudent(String matricNum, int status) {
         int counter;
@@ -232,5 +251,23 @@ public class IndexGroup implements Serializable {
                 }
         }
         return matricNumOfNewStud;
+    }
+
+    public void printEveryDetail(){
+        System.out.println("Index Number:" + this.indexNumber);
+        System.out.println("Vacancy: " + this.vacancy);
+        System.out.println("No. of students registered: " + this.numStudentsRegistered);
+        System.out.println("No. of students waiting: " +this.numStudentsWaiting);
+        System.out.println("Students registered:");
+        for(int i=0; i<numStudentsRegistered; ++i)
+            System.out.println(studentList[i]);
+        System.out.println("Students waiting: ");
+        for(int i=0; i<numStudentsWaiting; ++i)
+            System.out.println(studentsWaiting[i]);
+        System.out.println("Lessons: ");
+        Lesson[] lessons = getLessons();
+        for(int i=0; i<lessons.length; ++i){
+            lessons[i].displayEveryDetail();
+        }
     }
 }
