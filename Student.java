@@ -146,6 +146,7 @@ public class Student implements Serializable {
     public void displayEveryDetail(){
         System.out.println("Network Username: " + this.networkUsername);
         System.out.println("Name: " + this.name);
+        System.out.println("Email: " + this.emailID);
         System.out.println("Gender: " + this.gender);
         System.out.println("Nationality: " + this.nationality);
         System.out.println("Matric Number: " + this.matricNumber);
@@ -271,5 +272,15 @@ public class Student implements Serializable {
                 indexNum = l.getValue();
             }
         }*/
+    }
+
+    public HashMap<String, Integer> getCoursesRegistered() {
+        return coursesRegistered;
+    }
+
+    public void changeIndex(String courseCode, int newIndexNum, Lesson[] newLessonList){
+        this.coursesRegistered.replace(courseCode, newIndexNum);
+        this.timeTable.removeLessons(courseCode);
+        this.timeTable.addLesson(courseCode, newIndexNum, newLessonList, "REGISTERED");
     }
 }
