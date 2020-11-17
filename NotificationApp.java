@@ -1,3 +1,4 @@
+// Testing email notification system (in NotificationMgr)
 package Boundary;
 
 import Control.NotificationMgr;
