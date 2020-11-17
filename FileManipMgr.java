@@ -1,10 +1,12 @@
 package Control;
 
-import Entity.*;
+import Entity.Admin;
+import Entity.Course;
+import Entity.Password;
+import Entity.Student;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class FileManipMgr {
             return "course.dat";
         else if(object instanceof Password)
             return "password.dat";
+        else if(object instanceof Admin)
+            return "admin.dat";
         return "Error!";
     }
 
@@ -37,6 +41,8 @@ public class FileManipMgr {
             return 2;
         else if(object instanceof Password)
             return 3;
+        else if(object instanceof Admin)
+            return 4;
         return -1;
     }
 
@@ -124,17 +130,12 @@ public class FileManipMgr {
      * @param object
      * @param file
      * @return
-     * @throws ClassNotFoundException
-     * @throws NoSuchMethodException
      * @throws IOException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
      */
-    public static boolean writeObjectsToFile(List<Object> objects, String file) throws
-            ClassNotFoundException, NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
-        FileOutputStream foStream = null;
-        BufferedOutputStream boStream = null;
-        ObjectOutputStream ooStream = null;
+    public static boolean writeObjectsToFile(List<Object> objects, String file) throws IOException {
+        FileOutputStream foStream;
+        BufferedOutputStream boStream;
+        ObjectOutputStream ooStream;
         try {
             foStream = new FileOutputStream(file);
             boStream = new BufferedOutputStream(foStream);
@@ -145,12 +146,6 @@ public class FileManipMgr {
             return false;
         }
         int requiredType = convertObjectToType(objects.get(0));
-        Class student = Class.forName("Entity.Student");
-        Class course = Class.forName("Entity.Course");
-        Class indexGroup = Class.forName("Entity.IndexGroup");
-        Method studentMethod = student.getMethod("downcast", Object.class);
-        Method courseMethod = course.getMethod("downcast", Object.class);
-        Method indexMethod = indexGroup.getMethod("downcast", Object.class);
         System.out.println(requiredType);
         for(Object o: objects){
             switch (requiredType){
@@ -162,6 +157,9 @@ public class FileManipMgr {
                     break;
                 case 3: Password p = (Password) o;
                     ooStream.writeObject(p);
+                    break;
+                case 4: Admin a = (Admin) o;
+                    ooStream.writeObject(a);
                     break;
             }
         }
@@ -192,4 +190,16 @@ public class FileManipMgr {
         System.out.println("Records successfully added!");
         return true;
     }
+
+
+    /*public static boolean editObjectRecord(Object object, int index) throws ClassNotFoundException,
+            NoSuchMethodException, IOException, InvocationTargetException, IllegalAccessException {
+        List<Object> objects = new ArrayList<>();
+        String file = checkTypeOfObject(object);
+        objects = readObjectsFromFile(file);
+        objects.set(index, object);
+        writeObjectsToFile(objects, file);
+        System.out.println("The record has been successully modified.");
+        return true;
+    }*/
 }
