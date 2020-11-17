@@ -1,4 +1,4 @@
-
+package Entity;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -24,9 +24,6 @@ public class Course implements Serializable {
     private int numTuts;
     private int numLabs;
     private int numLecs;
-        
-    private Venue vent;
-    private WeekSchedule Weksc;
 
     /**
      * @param courseCode the unique code for the course
@@ -43,13 +40,13 @@ public class Course implements Serializable {
         this.courseCode = courseCode;
     }
 
-    public Course(String courseCode, String courseTitle, int numAUs, String school, IndexGroup[] indexList,
-                  int maxLimit, int numTuts, int numLabs, int numLecs,Venue ven,WeekSchedule Weekt) {
+    public Course(String courseCode, String courseTitle, int numAUs, String school,
+                  int maxLimit, int numTuts, int numLabs, int numLecs) {
         this.courseCode = courseCode;
         this.courseTitle = courseTitle;
         this.numAUs = numAUs;
         this.school = school;
-        this.indexList = indexList;
+        this.indexList =  inputIndexList(courseCode, numTuts, numLabs);
         this.maxLimit = maxLimit;
         this.roster = new String[maxLimit];
         this.numStudentsRegistered = 0;
@@ -57,12 +54,6 @@ public class Course implements Serializable {
         this.numTuts = numTuts;
         this.numLabs = numLabs;
         this.numLecs = numLecs;
-        
-        this.vent=ven;
-        this.Weksc=Weekt;
-        
-        
-        
         lecture = new Lesson[this.numLecs];
         setLecture();
     }
@@ -123,13 +114,13 @@ public class Course implements Serializable {
         this.vacancy = vacancy;
     }
 
-
     public void setLecture() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Scanner sc = new Scanner(System.in);
         LocalTime startTime;
         LocalTime endTime;
-        String day;
+        String day, venue;
+        WeeklySchedule weeklySchedule;
         System.out.println("Setting of Lectures");
         for(int i = 0; i < numLecs; i++) {
             System.out.println("For lecture " + i);
@@ -139,7 +130,12 @@ public class Course implements Serializable {
             endTime = LocalTime.parse(sc.next(), timeFormatter);
             System.out.print("Enter Day of the week: ");
             day = sc.next();
-            lecture[i] = new Lesson(startTime, endTime, day);
+            sc.nextLine();
+            System.out.println("Enter venue of lesson: ");
+            venue = sc.nextLine();
+            System.out.println("Choose whether the lesson is for ODD/EVEN/BOTH weeks.");
+            weeklySchedule = WeeklySchedule.chooseWeek();
+            lecture[i] = new Lesson(startTime, endTime, day, venue, weeklySchedule, LessonType.LECTURE);
         }
     }
 
@@ -206,6 +202,25 @@ public class Course implements Serializable {
                 this.numAUs, this.school, this.maxLimit, this.numTuts, this.numLabs, this.vacancy);
     }
 
+    private IndexGroup[] inputIndexList(String courseCode, int numTuts, int numLabs) {
+        Scanner sc = new Scanner(System.in);
+        int numIndexes, maxLimit, indexNumber;
+
+        System.out.print("Enter number of indexes: ");
+        numIndexes = sc.nextInt();
+        IndexGroup[] indexList = new IndexGroup[numIndexes];
+        for(int i = 0; i < numIndexes; i ++) {
+            System.out.print("Enter desired index number: ");
+            indexNumber = sc.nextInt();
+            System.out.print("Enter the max number of students for this index: ");
+            maxLimit = sc.nextInt();
+            indexList[i] = new IndexGroup(courseCode, indexNumber, maxLimit, numTuts, numLabs);
+        }
+
+        System.out.println("Done with inputting of indexes.");
+        return indexList;
+    }
+
     public boolean equals(Object c){
         return this.courseCode.equals(((Course)c).getCourseCode());
     }
@@ -234,53 +249,23 @@ public class Course implements Serializable {
             }
     }
 
-    
-    
-    public void setvenue() {
-    	String vet;
-    	Scanner sc = new Scanner(System.in);
-    	System.out.print("Please set the Venue of the lesson: ");
-    	vet=sc.next();
-    	Venue vet1=new Venue(vet);
-    	this.vent=vet1;
+    public void swapStudents(Student s1, Student s2, int indexNum1, int indexNum2){
+        IndexGroup ig1 = null, ig2 = null;
+        for(IndexGroup ig: indexList){
+            if(ig.getIndexNumber() == indexNum1)
+                ig1 = ig;
+            else if(ig.getIndexNumber() == indexNum2)
+                ig2 = ig;
+            if(ig1 != null && ig2 != null)
+                break;
+        }
+        ig1.changeStudent(s1.getMatricNumber(), s2.getMatricNumber());
+        ig2.changeStudent(s2.getMatricNumber(), s1.getMatricNumber());
     }
-    public void setweek() {
-    	
-    	int wet1,out=0;
-    	Scanner sc = new Scanner(System.in);
-    	do {
-    	System.out.print("Please choose the week type 0=EVEN,1=ODD,2=BOTH ");
-    	wet1=sc.nextInt();
-    	switch(wet1) {
-    	case 0:
-    		System.out.println("EVEN weeks chosen");
-    	this.Weksc=WeekSchedule.EVEN;
-    	out=1;
-    	break;
-    	case 1:
-    		System.out.println("ODD weeks chosen");
-    		this.Weksc=WeekSchedule.ODD;
-    		out=1;
-    		break;
-    	case 2: 
-    		System.out.println("BOTH weeks chosen");
-    		this.Weksc=WeekSchedule.BOTH;
-    		out=1;
-    		break;
-    	default:
-    		System.out.println("Error detected try again");
-    	break;
-    	}
-    	}while(out!=1);
-    }
-    
-    
+
     public void displayEveryDetail() {
-        
         System.out.println("Course Code: " + this.courseCode);
-        System.out.println("Course Title: " + this.courseTitle);      
-        System.out.println("Venue location: " + this.vent);
-        System.out.println("Week type: " + this.Weksc);
+        System.out.println("Course Title: " + this.courseTitle);
         System.out.println("Number of AUs: " + this.numAUs);
         System.out.println("School: " + this.school);
         System.out.println("Max. Limit:" + this.maxLimit);
@@ -302,6 +287,4 @@ public class Course implements Serializable {
             lectures[i].displayEveryDetail();
         }
     }
-
-
 }
