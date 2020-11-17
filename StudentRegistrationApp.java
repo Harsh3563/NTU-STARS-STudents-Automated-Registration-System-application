@@ -2,28 +2,30 @@ package Boundary;
 
 import Control.CourseMgr;
 import Control.FileManipMgr;
+import Control.PasswordMgr;
 import Control.StudentRegistrationMgr;
-import Entity.Course;
-import Entity.IndexGroup;
-import Entity.Student;
+import Entity.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class StudentRegistrationApp {
-    public static void main(String args[]){
-        int choice, choice1, counter, count_curr_index;
+    public static void main(String args[]) throws NoSuchAlgorithmException {
+        int choice, choice1, counter, count_curr_index, index_course, index_password;
         Iterator<Map.Entry<String, Integer>> it;
         HashMap<String, Integer> courses;
         List<Course> courseList;
         Course course;
         IndexGroup[] indexList;
-        Student s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(0);
+        String chosenCourse, peerUsername, peerPassword;
+        Student s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(2);
         System.out.println("Hi " + s.getName());
         do {
             System.out.println("Enter your choice according to the following menu:");
             System.out.println("1. Register for a course.\n2. Check/Print Courses registered.\n" +
-                    "3. Deregister From a Course\n4. Change Index Number\n6. Exit");
-            s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(0);
+                    "3. Deregister From a Course\n4. Change Index Number\n" +
+                    "5. Swap Index Group with Peer\n6. Exit");
+            s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(2);
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
             switch(choice){
@@ -102,10 +104,10 @@ public class StudentRegistrationApp {
                                 choice1 = -1;
                             }
                         }
-                        String chosenCourse = (String) courses.keySet().toArray()[choice1 - 1];
+                        chosenCourse = (String) courses.keySet().toArray()[choice1 - 1];
                         System.out.println(chosenCourse);
                         course = new Course(chosenCourse);
-                        int index_course = FileManipMgr.checkIfObjectExists(course);
+                        index_course = FileManipMgr.checkIfObjectExists(course);
                         if(index_course == -1) {
                             System.out.println("Error occurred");
                             break;
@@ -123,7 +125,8 @@ public class StudentRegistrationApp {
                                 count_curr_index = counter;
                                 continue;
                             }
-                            System.out.println(counter + ". " + i.getIndexNumber());
+                            System.out.println(counter + ". " + i.getIndexNumber() + "\t" + i.getVacancy()
+                                    + "\t" + i.getNumStudentsWaiting());
                             counter++;
                         }
                         choice1 = sc.nextInt();
@@ -132,6 +135,48 @@ public class StudentRegistrationApp {
                         IndexGroup i = indexList[choice1 - 1];
                         StudentRegistrationMgr.changeIndexGroup(s, course.getCourseCode(),
                                 i.getIndexNumber(), oldIndexNum);
+                        break;
+                case 5: System.out.println("Here are the courses you are registered for.");
+                        courses = s.getCoursesRegistered();
+                        it = courses.entrySet().iterator();
+                        counter = 1;
+                        choice1 = -1;
+                        while(choice1 == -1){
+                            while (it.hasNext()) {
+                                Map.Entry<String, Integer> l = it.next();
+                                System.out.println(counter + ". " + l.getKey());
+                                counter++;
+                            }
+                            choice1 = sc.nextInt();
+                            if (choice1 < 1 || choice1 > counter) {
+                                System.out.println("Please enter a valid option.");
+                                choice1 = -1;
+                            }
+                        }
+                        chosenCourse = (String) courses.keySet().toArray()[choice1 - 1];
+                        course = new Course(chosenCourse);
+                        index_course = FileManipMgr.checkIfObjectExists(course);
+                        if(index_course == -1) {
+                            System.out.println("Error occurred");
+                            break;
+                        }
+                        courseList = CourseMgr.obtainCourseList();
+                        course = courseList.get(index_course);
+                        System.out.println("Please enter peer's username.");
+                        peerUsername = sc.next();
+                        System.out.println("Please enter peer's password.");
+                        peerPassword = sc.next();
+                        Password password = new Password(peerUsername, "student",
+                                Hashingtable.hexercon(Hashingtable.hasho(peerPassword)));
+                        index_password = PasswordMgr.validatePassword(password);
+                        if(index_password == -1){
+                            System.out.println("The peer has entered the wrong credentials!");
+                            break;
+                        }
+                        Student peer = PasswordMgr.retrieveStudentRecord(password);
+                        if(peer == null)
+                            System.out.println("Error while finding student by username.");
+                        StudentRegistrationMgr.swapIndexGroupWithPeer(s, peer, course.getCourseCode());
                         break;
                 case 6:
                     System.exit(0);
