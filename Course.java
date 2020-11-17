@@ -1,4 +1,4 @@
-package Entity;
+
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -24,6 +24,9 @@ public class Course implements Serializable {
     private int numTuts;
     private int numLabs;
     private int numLecs;
+        
+    private Venue vent;
+    private WeekSchedule Weksc;
 
     /**
      * @param courseCode the unique code for the course
@@ -41,7 +44,7 @@ public class Course implements Serializable {
     }
 
     public Course(String courseCode, String courseTitle, int numAUs, String school, IndexGroup[] indexList,
-                  int maxLimit, int numTuts, int numLabs, int numLecs) {
+                  int maxLimit, int numTuts, int numLabs, int numLecs,Venue ven,WeekSchedule Weekt) {
         this.courseCode = courseCode;
         this.courseTitle = courseTitle;
         this.numAUs = numAUs;
@@ -54,6 +57,12 @@ public class Course implements Serializable {
         this.numTuts = numTuts;
         this.numLabs = numLabs;
         this.numLecs = numLecs;
+        
+        this.vent=ven;
+        this.Weksc=Weekt;
+        
+        
+        
         lecture = new Lesson[this.numLecs];
         setLecture();
     }
@@ -225,9 +234,53 @@ public class Course implements Serializable {
             }
     }
 
+    
+    
+    public void setvenue() {
+    	String vet;
+    	Scanner sc = new Scanner(System.in);
+    	System.out.print("Please set the Venue of the lesson: ");
+    	vet=sc.next();
+    	Venue vet1=new Venue(vet);
+    	this.vent=vet1;
+    }
+    public void setweek() {
+    	
+    	int wet1,out=0;
+    	Scanner sc = new Scanner(System.in);
+    	do {
+    	System.out.print("Please choose the week type 0=EVEN,1=ODD,2=BOTH ");
+    	wet1=sc.nextInt();
+    	switch(wet1) {
+    	case 0:
+    		System.out.println("EVEN weeks chosen");
+    	this.Weksc=WeekSchedule.EVEN;
+    	out=1;
+    	break;
+    	case 1:
+    		System.out.println("ODD weeks chosen");
+    		this.Weksc=WeekSchedule.ODD;
+    		out=1;
+    		break;
+    	case 2: 
+    		System.out.println("BOTH weeks chosen");
+    		this.Weksc=WeekSchedule.BOTH;
+    		out=1;
+    		break;
+    	default:
+    		System.out.println("Error detected try again");
+    	break;
+    	}
+    	}while(out!=1);
+    }
+    
+    
     public void displayEveryDetail() {
+        
         System.out.println("Course Code: " + this.courseCode);
-        System.out.println("Course Title: " + this.courseTitle);
+        System.out.println("Course Title: " + this.courseTitle);      
+        System.out.println("Venue location: " + this.vent);
+        System.out.println("Week type: " + this.Weksc);
         System.out.println("Number of AUs: " + this.numAUs);
         System.out.println("School: " + this.school);
         System.out.println("Max. Limit:" + this.maxLimit);
