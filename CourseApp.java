@@ -1,15 +1,12 @@
 package Boundary;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Locale;
-import java.util.Scanner;
-
 import Control.CourseMgr;
-import Entity.Course;
 import Entity.IndexGroup;
 import Entity.Lesson;
-import Entity.Student;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Scanner;
 
 public class CourseApp {
 
@@ -58,8 +55,10 @@ public class CourseApp {
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new number of AUs: ");
                     numAUs = sc.nextInt();
                     manager.changeAU(courseCode, numAUs, index);
@@ -68,8 +67,10 @@ public class CourseApp {
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new school: ");
                     school = sc.next();
                     manager.changeSchool(courseCode, school, index);
@@ -78,8 +79,10 @@ public class CourseApp {
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new max number of students: ");
                     maxLimit = sc.nextInt();
                     manager.changeMaxLimit(courseCode, maxLimit, index);
@@ -88,34 +91,40 @@ public class CourseApp {
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new course code: ");
                     newCourseCode = sc.next();
                     manager.changeCourseCode(courseCode, newCourseCode, index);
                     break;
-                case 6: //Change number of tutorials
+                /*case 6: //Change number of tutorials
                     System.out.println("Changing of number of tutorials may cause problems!!");
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new number of tutorials: ");
                     numTuts = sc.nextInt();
                     manager.changeNumTuts(courseCode, numTuts, index);
-                    break;
-                case 7://Change number of labs
+                    break;*/
+                /*case 7://Change number of labs
                     System.out.println("Changing of number of labs may cause problems!!");
                     System.out.print("Enter desired course code: ");
                     courseCode = sc.next();
                     index = manager.checkIfCourseExists(courseCode);
-                    if(index == -1)
+                    if(index == -1) {
                         System.out.println("Course does not exist!");
+                        break;
+                    }
                     System.out.print("Enter new number of labs: ");
                     numLabs = sc.nextInt();
                     manager.changeNumLabs(courseCode, numLabs, index);
-                    break;
+                    break;*/
                 case 8:
                     manager.printCourses();
                     break;
