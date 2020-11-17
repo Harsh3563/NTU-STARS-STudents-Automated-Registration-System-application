@@ -9,17 +9,19 @@ public class Lesson implements Serializable {
     private LocalTime endTime;
     private Day day;
     private Duration duration;
-    WeekSchedule weekT;
-    private Venue Locate;
+    private String venue;
+    private WeeklySchedule weeklySchedule;
+    private LessonType lessonType;
 
-    private Venue vent;
-    private WeekSchedule Weksc;
-    
-    public Lesson(LocalTime startTime, LocalTime endTime, String day){
+    public Lesson(LocalTime startTime, LocalTime endTime, String day,
+                  String venue, WeeklySchedule weeklySchedule, LessonType lessonType){
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = Day.valueOf(day);
-        duration = Duration.between(endTime, startTime);
+        this.duration = Duration.between(endTime, startTime);
+        this.venue = venue;
+        this.weeklySchedule = weeklySchedule;
+        this.lessonType = lessonType;
     }
 
     public LocalTime getStartTime() {
@@ -49,28 +51,41 @@ public class Lesson implements Serializable {
     public Duration getDuration() {
         return duration;
     }
-    
-    public WeekSchedule getweektype() {
-        return weekT;
-    }
-    public Venue getlocation() {
-        return Locate;
-    }
-    public void setWeekschedule(WeekSchedule Wek ) {
-       this.weekT=Wek;
-    }
-    public void setlocation(Venue ve ) {
-        this.Locate=ve;
-     }
-    
-    
 
     public void setDuration(Duration duration) {
         duration = Duration.between(endTime, startTime);
     }
     public void displayEveryDetail(){
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println(day.toString());
+        System.out.println("Start Time : " + startTime);
+        System.out.println("End Time : " + endTime);
+        System.out.println("Day : " + day.toString());
+        System.out.println("Duration : " + duration);
+        System.out.println("Venue : " + venue);
+        System.out.println("Weekly Schedule : " + weeklySchedule);
+        System.out.println("Lesson Type : " + lessonType);
+    }
+
+    public WeeklySchedule getWeeklySchedule() {
+        return weeklySchedule;
+    }
+
+    public void setWeeklySchedule(WeeklySchedule weeklySchedule) {
+        this.weeklySchedule = weeklySchedule;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
     }
 }
