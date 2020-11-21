@@ -8,7 +8,7 @@ import Entity.IndexGroup;
 import java.util.List;
 import java.util.Scanner;
 
-public class StudentListApp {
+public class StudentListUI {
     public static void main(String args[]){
         Scanner sc = new Scanner(System.in);
         int choice = -1, counter, choice1;
