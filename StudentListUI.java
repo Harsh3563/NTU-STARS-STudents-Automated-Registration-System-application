@@ -15,9 +15,17 @@ public class StudentListUI {
         List<Course> courseList;
         Course c;
         do{
+            try
+            {
             System.out.println("Choose your option according to the following menu: ");
             System.out.println("1. Print student list by course.\n2. Print student list by index group.");
             choice =  sc.nextInt();
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Invalid choice! Please enter an integer value");
+                continue;
+            }   
             switch(choice){
                 case 1:
                     courseList = CourseMgr.obtainCourseList();
@@ -52,7 +60,9 @@ public class StudentListUI {
                     break;
                 default: System.out.println("Please enter a valid option.");
             }
-        }while(choice!=-1);
+            System.out.println("Press 'Q' to terminate , 'C' to continue");
+            quitOpt=sc.next();
+        }while(quitOpt!="Q");
 
     }
 }
