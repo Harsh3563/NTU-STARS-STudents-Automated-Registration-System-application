@@ -11,8 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-public class StudentApp {
-    public static void main(String args[]) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
+public class StudentUI {
+    public static void StudentApp() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
         String name, matricNumber, nationality, networkUsername, emailID;
         LocalDate startDate, endDate;
         LocalTime startTime, endTime;
