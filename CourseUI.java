@@ -111,7 +111,7 @@ public class CourseUI {
             
             System.out.println("Press 'Q' to terminate , 'C' to continue");
             quitOpt=sc.next();
-        } while(choice != 9 && quitOpt!="Q");
+        } while(quitOpt!="Q");
     }
 
 
