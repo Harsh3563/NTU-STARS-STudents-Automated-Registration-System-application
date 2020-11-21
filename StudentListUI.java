@@ -42,7 +42,7 @@ public class StudentListUI {
                     }
                     catch (Exception e)
                     {
-                        System.out.println("Invalid value! Please enter an integer value");
+                        System.out.println("Invalid value! Please enter correct value");
                         break;
                     }              
                     break;
@@ -70,14 +70,21 @@ public class StudentListUI {
                     }
                     catch (Exception e)
                     {
-                        System.out.println("Invalid value! Please enter an integer value");
+                        System.out.println("Invalid value! Please enter correct value");
                         break;
                     }    
                     break;
                 default: System.out.println("Please enter a valid option.");
             }
+            try
+            {
             System.out.println("Press 'Q' to terminate , 'C' to continue");
             quitOpt=sc.next();
+            }
+            catch (Exception e)
+            {
+            System.out.println("Invalid value! Please enter correct value");
+            }
         }while(quitOpt!="Q");
 
     }
