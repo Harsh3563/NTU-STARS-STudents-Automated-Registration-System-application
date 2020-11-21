@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class StudentRegistrationApp {
-    public static void main(String args[]) throws NoSuchAlgorithmException {
+    public void RegStudent() throws NoSuchAlgorithmException {
         int choice, choice1, counter, count_curr_index, index_course, index_password;
         Iterator<Map.Entry<String, Integer>> it;
         HashMap<String, Integer> courses;
