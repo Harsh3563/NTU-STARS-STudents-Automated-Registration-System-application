@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
-public class CourseApp {
+public class CourseUI {
 
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IOException, IllegalAccessException, InvocationTargetException {
+    public static void CourseApp() throws ClassNotFoundException, NoSuchMethodException, IOException, IllegalAccessException, InvocationTargetException {
         // TODO Auto-generated method stub
         int choice;
         String courseCode, newCourseCode;
