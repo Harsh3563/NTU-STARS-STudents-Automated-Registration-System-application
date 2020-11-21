@@ -105,9 +105,6 @@ public class CourseUI {
                     case 7:
                         System.exit(0);
                         break;
-                    case 100:
-                        manager.printEveryCourseDetailPossible();
-                        break;
                     default:
                         System.out.println("Invalid choice! Enter the correct value");
                 }
