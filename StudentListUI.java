@@ -34,9 +34,17 @@ public class StudentListUI {
                         System.out.println(counter + ". " + course.getCourseCode());
                         counter++;
                     }
+                    try
+                    {
                     choice1 = sc.nextInt();
                     c = courseList.get(choice1 - 1);
                     StudentListMgr.printStudentListByCourse(c);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Invalid value! Please enter an integer value");
+                        break;
+                    }              
                     break;
                 case 2:
                     courseList = CourseMgr.obtainCourseList();
@@ -45,6 +53,8 @@ public class StudentListUI {
                         System.out.println(counter + ". " + course.getCourseCode());
                         counter++;
                     }
+                    try
+                    {
                     choice1 = sc.nextInt();
                     c = courseList.get(choice1 - 1);
                     counter = 1;
@@ -57,6 +67,12 @@ public class StudentListUI {
                     choice1 = sc.nextInt();
                     IndexGroup i = indexGroups[choice1 - 1];
                     StudentListMgr.printStudentListByIndexGroup(i);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Invalid value! Please enter an integer value");
+                        break;
+                    }    
                     break;
                 default: System.out.println("Please enter a valid option.");
             }
