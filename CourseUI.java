@@ -180,9 +180,15 @@ public class CourseUI {
                     default:
                         System.out.println("Invalid choice! Enter the correct value");
                 }
-            
+            try
+            {
             System.out.println("Press 'Q' to terminate , 'C' to continue");
             quitOpt=sc.next();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid value! Please enter correct value");
+            }
         } while(quitOpt!="Q");
     }
 
