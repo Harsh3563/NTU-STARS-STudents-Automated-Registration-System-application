@@ -41,8 +41,17 @@ public class CourseUI {
 
                 switch(choice) {
                     case 1: //Adding Course to List
-                        System.out.print("Enter desired course code: ");
-                        courseCode = sc.next();
+                        try
+                        {
+                            System.out.print("Enter desired course code: ");
+                            courseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }    
+                        
                         if(manager.checkIfCourseExists(courseCode) != -1) {
                             System.out.println("Course Code already exists!");
                             break;
@@ -52,51 +61,115 @@ public class CourseUI {
                             break;
                         }
                     case 2://Changing number of AUs
+                        try
+                        {
                         System.out.print("Enter desired course code: ");
                         courseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         index = manager.checkIfCourseExists(courseCode);
                         if(index == -1) {
                             System.out.println("Course does not exist!");
                             break;
                         }
+                        try
+                        {
                         System.out.print("Enter new number of AUs: ");
                         numAUs = sc.nextInt();
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         manager.changeAU(courseCode, numAUs, index);
                         break;
                     case 3://Changing School
+                        try
+                        {
                         System.out.print("Enter desired course code: ");
                         courseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         index = manager.checkIfCourseExists(courseCode);
                         if(index == -1) {
                             System.out.println("Course does not exist!");
                             break;
                         }
+                        try
+                        {
                         System.out.print("Enter new school: ");
                         school = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         manager.changeSchool(courseCode, school, index);
                         break;
                     case 4://Change max limit
+                        try
+                        {
                         System.out.print("Enter desired course code: ");
                         courseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         index = manager.checkIfCourseExists(courseCode);
                         if(index == -1) {
                             System.out.println("Course does not exist!");
                             break;
                         }
+                        try
+                        {
                         System.out.print("Enter new max number of students: ");
                         maxLimit = sc.nextInt();
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         manager.changeMaxLimit(courseCode, maxLimit, index);
                         break;
                     case 5: //Change course code
+                        try
+                        {
                         System.out.print("Enter desired course code: ");
                         courseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         index = manager.checkIfCourseExists(courseCode);
                         if(index == -1) {
                             System.out.println("Course does not exist!");
                             break;
                         }
+                        try
+                        {
                         System.out.print("Enter new course code: ");
                         newCourseCode = sc.next();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter an integer value");
+                            break;
+                        }
                         manager.changeCourseCode(courseCode, newCourseCode, index);
                         break;
                     case 6:
