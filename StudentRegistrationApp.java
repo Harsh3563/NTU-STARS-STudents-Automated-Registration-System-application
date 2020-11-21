@@ -9,8 +9,8 @@ import Entity.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-public class StudentRegistrationApp {
-    public void RegStudent() throws NoSuchAlgorithmException {
+public class StudentRegistrationUI {
+    public static void StudentRegistrationApp() throws NoSuchAlgorithmException {
         int choice, choice1, counter, count_curr_index, index_course, index_password;
         Iterator<Map.Entry<String, Integer>> it;
         HashMap<String, Integer> courses;
