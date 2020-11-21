@@ -21,6 +21,8 @@ public class StudentRegistrationUI {
         Student s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(2);
         System.out.println("Hi " + s.getName());
         do {
+            try
+            {
             System.out.println("Enter your choice according to the following menu:");
             System.out.println("1. Register for a course.\n2. Check/Print Courses registered.\n" +
                     "3. Deregister From a Course\n4. Change Index Number\n" +
@@ -28,9 +30,17 @@ public class StudentRegistrationUI {
             s = (Student)(FileManipMgr.readObjectsFromFile("student.dat")).get(2);
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Invalid choice! Please enter an integer value");
+                continue;
+            }
             switch(choice){
                 case 1:
                     courseList = CourseMgr.obtainCourseList();
+                    try
+                    {
                     System.out.println("Choose among the following courses (by inputting the respective " +
                             "choice number.");
                     System.out.println("========================================");
@@ -60,11 +70,19 @@ public class StudentRegistrationUI {
                     IndexGroup indexGroup = indexList[choice1 - 1];
                     StudentRegistrationMgr.registerStudentForCourse(s, course.getCourseCode(),
                             indexGroup.getIndexNumber());
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Invalid value! Please enter correct value");
+                        break;
+                    }    
                     break;
                 case 2:
                     StudentRegistrationMgr.printCoursesRegistered(s);
                     break;
                 case 3:
+                    try
+                    {
                     System.out.println("Here are the courses for which you are registered or are on " +
                             "waiting list. Choose amongst them.");
                     courses = s.getCourses();
@@ -85,8 +103,17 @@ public class StudentRegistrationUI {
                     }
                     String courseToDeregister = (String) courses.keySet().toArray()[choice1 - 1];
                     System.out.println(StudentRegistrationMgr.deregisterStudentFromCourse(s, courseToDeregister));
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Invalid value! Please enter correct value");
+                        break;
+                    }    
                     break;
-                case 4: System.out.println("Here are the courses for which you are registered or are on " +
+                case 4: 
+                        try
+                        {
+                        System.out.println("Here are the courses for which you are registered or are on " +
                         "waiting list. Choose amongst them.");
                         courses = s.getCourses();
                         it = courses.entrySet().iterator();
@@ -135,8 +162,17 @@ public class StudentRegistrationUI {
                         IndexGroup i = indexList[choice1 - 1];
                         StudentRegistrationMgr.changeIndexGroup(s, course.getCourseCode(),
                                 i.getIndexNumber(), oldIndexNum);
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter correct value");
+                            break;
+                        }    
                         break;
-                case 5: System.out.println("Here are the courses you are registered for.");
+                case 5: 
+                        try
+                        {
+                        System.out.println("Here are the courses you are registered for.");
                         courses = s.getCoursesRegistered();
                         it = courses.entrySet().iterator();
                         counter = 1;
@@ -177,11 +213,27 @@ public class StudentRegistrationUI {
                         if(peer == null)
                             System.out.println("Error while finding student by username.");
                         StudentRegistrationMgr.swapIndexGroupWithPeer(s, peer, course.getCourseCode());
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Invalid value! Please enter correct value");
+                            break;
+                        }    
                         break;
                 case 6:
                     System.exit(0);
                 default: System.out.println("Please enter a correct option.");
             }
-        }while(choice != -1);
+            try
+            {
+            System.out.println("Press 'Q' to terminate , 'C' to continue");
+            quitOpt=sc.next();
+            }
+            catch (Exception e)
+            {
+            System.out.println("Invalid value! Please enter correct value");
+            break;
+            }    
+        }while(quitOpt!="Q");
     }
 }
