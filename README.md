@@ -4,9 +4,9 @@ Final codes and other supporting documents can be found in 'SE1-grp3.zip'
 
 Dependencies required for the project:
 
-activation.jar
-javax.mail.jar
-mail.jar
+1. activation.jar
+2. javax.mail.jar
+3. mail.jar
 
 All these dependecies are included in the libs subfolder. They must simply be included in the IDE. 
 
