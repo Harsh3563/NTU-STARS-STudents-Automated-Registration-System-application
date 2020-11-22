@@ -8,9 +8,9 @@ Dependencies required for the project:
 2. javax.mail.jar
 3. mail.jar
 
-All these dependecies are included in the libs subfolder. They must simply be included in the IDE. 
+All these dependencies are included in the libs subfolder. They must simply be included in the IDE. 
 
-Note that the subfolder "registered student test files" contains the database with certain amount of student already pre registered, while the subfolder 
+Note that the subfolder "registered student test files" contains the database with certain number of students already pre registered, while the subfolder 
 "test inputs final" contains the database of 16 students and 3 courses, with none of the students registered. In order to test out with the database, just 
 copy and paste the corresponding databases from the folder into the root folder. 
 
